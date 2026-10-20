@@ -1,0 +1,2036 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitNutri Pro | مخطط التغذية والتمارين الذكي</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts: Cairo & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        body {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        html[dir="rtl"] body {
+            font-family: 'Cairo', sans-serif;
+        }
+        html[dir="ltr"] body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.1);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #10b981;
+            border-radius: 9999px;
+        }
+        .glass-card {
+            backdrop-filter: blur(12px);
+        }
+        .tab-active {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white !important;
+            box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
+        }
+        @keyframes pulse-border {
+            0%, 100% { border-color: rgba(16, 185, 129, 0.6); }
+            50% { border-color: rgba(16, 185, 129, 1); }
+        }
+        .recommended-badge {
+            animation: pulse-border 2s infinite;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col selection:bg-emerald-500 selection:text-white">
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-white/85 dark:bg-slate-900/85 glass-card border-b border-slate-200 dark:border-slate-800 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white shadow-lg shadow-emerald-500/30">
+                    <i class="fa-solid fa-dumbbell text-xl"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-xl sm:text-2xl font-extrabold bg-gradient-to-r from-emerald-600 to-teal-500 dark:from-emerald-400 dark:to-teal-300 bg-clip-text text-transparent" data-i18n="appTitle">
+                            فيت نيوتري برو
+                        </h1>
+                        <span class="hidden sm:inline-block text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+                            PRO AI
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="appSubtitle">
+                        مخطط التغذية الدقيق والتمارين الذكي الشامل
+                    </p>
+                </div>
+            </div>
+
+            <!-- Navigation Quick Links (Desktop) -->
+            <nav class="hidden md:flex items-center gap-1 bg-slate-100 dark:bg-slate-800/90 p-1.5 rounded-2xl border border-slate-200/70 dark:border-slate-700/70">
+                <a href="#section-calculator" class="px-4 py-2 rounded-xl text-sm font-bold hover:bg-white dark:hover:bg-slate-700 transition flex items-center gap-2">
+                    <i class="fa-solid fa-calculator text-emerald-500"></i>
+                    <span data-i18n="navCalculator">حاسبة السعرات</span>
+                </a>
+                <a href="#section-diet" class="px-4 py-2 rounded-xl text-sm font-bold hover:bg-white dark:hover:bg-slate-700 transition flex items-center gap-2">
+                    <i class="fa-solid fa-utensils text-amber-500"></i>
+                    <span data-i18n="navDiet">النظام الغذائي</span>
+                </a>
+                <a href="#section-workout" class="px-4 py-2 rounded-xl text-sm font-bold hover:bg-white dark:hover:bg-slate-700 transition flex items-center gap-2">
+                    <i class="fa-solid fa-fire-flame-curved text-rose-500"></i>
+                    <span data-i18n="navWorkout">جدول التمارين</span>
+                </a>
+            </nav>
+
+            <!-- Action Controls: Language & Theme -->
+            <div class="flex items-center gap-2.5">
+                <!-- Language Switcher -->
+                <button id="langToggleBtn" onclick="toggleLanguage()" class="px-3.5 py-2.5 rounded-xl font-bold text-sm bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 transition flex items-center gap-2 shadow-sm" title="تغيير اللغة / Switch Language">
+                    <i class="fa-solid fa-earth-americas text-emerald-500"></i>
+                    <span id="langBtnText">English</span>
+                </button>
+
+                <!-- Dark/Light Mode Switcher -->
+                <button id="themeToggleBtn" onclick="toggleTheme()" class="w-11 h-11 rounded-xl flex items-center justify-center bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-amber-400 border border-slate-200 dark:border-slate-700 transition shadow-sm" title="الوضع الليلي / النهاري">
+                    <i id="themeIcon" class="fa-solid fa-sun text-lg"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        <!-- Hero Summary Banner -->
+        <section class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 text-white p-6 sm:p-10 shadow-2xl border border-emerald-500/20">
+            <div class="absolute -top-24 -left-24 w-72 h-72 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -right-24 w-72 h-72 bg-teal-500/20 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-8 space-y-4">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs sm:text-sm font-bold">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span data-i18n="heroBadge">نظام ذكي متكامل مصمم خصيصاً لهدفك ومستواك</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-4xl font-black leading-tight" data-i18n="heroTitle">
+                        صمّم نظامك الغذائي بالسعرات والماكروز وجدول تمارينك الاحترافي في ثوانٍ!
+                    </h2>
+                    <p class="text-slate-300 text-sm sm:text-base max-w-2xl leading-relaxed" data-i18n="heroDesc">
+                        أدخل بياناتك الشخصية ليقوم التطبيق بحساب احتياجك اليومي الدقيق من السعرات الحرارية وكامل القيم الغذائية (بروتين، كارب، دهون صحية، ألياف، ومياه)، مع اقتراح أفضل نظام تدريبي (كارديو HIIT/LISS، مقاومة منزلية، أو جيم: Pro Split, PPL, Arnold Split) مناسب لمستواك.
+                    </p>
+                </div>
+                <div class="lg:col-span-4 grid grid-cols-2 gap-3">
+                    <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 text-center">
+                        <div class="text-emerald-400 text-2xl font-black" id="heroTargetCal">2,350</div>
+                        <div class="text-xs text-slate-300 mt-1" data-i18n="heroCalLabel">السعرات المستهدفة</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 text-center">
+                        <div class="text-amber-400 text-2xl font-black" id="heroTargetProt">165g</div>
+                        <div class="text-xs text-slate-300 mt-1" data-i18n="heroProtLabel">البروتين اليومي</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 text-center">
+                        <div class="text-sky-400 text-lg font-extrabold truncate" id="heroDietName">متوازن</div>
+                        <div class="text-xs text-slate-300 mt-1" data-i18n="heroDietLabel">النظام الغذائي</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 text-center">
+                        <div class="text-rose-400 text-lg font-extrabold truncate" id="heroSplitName">Push Pull Legs</div>
+                        <div class="text-xs text-slate-300 mt-1" data-i18n="heroSplitLabel">نظام التمرين</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SECTION 1: PERSONAL PROFILE & CALCULATOR
+             ========================================== -->
+        <section id="section-calculator" class="scroll-mt-24 space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-bold text-lg">
+                        1
+                    </div>
+                    <div>
+                        <h3 class="text-xl sm:text-2xl font-extrabold" data-i18n="sec1Title">البيانات الشخصية وحاسبة السعرات والقيم الغذائية</h3>
+                        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400" data-i18n="sec1Sub">تعديل أي قيمة يقوم بتحديث السعرات والوجبات وجدول التمارين تلقائياً</p>
+                    </div>
+                </div>
+                <button onclick="resetProfile()" class="self-start sm:self-auto text-xs font-bold px-3.5 py-2 rounded-xl bg-slate-200/70 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <span data-i18n="resetBtn">إعادة ضبط القيم</span>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Left/Right Inputs Form (5 cols) -->
+                <div class="lg:col-span-5 bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-xl border border-slate-200/80 dark:border-slate-800 space-y-5">
+                    
+                    <!-- Gender Selection -->
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300" data-i18n="labelGender">النوع (الجنس)</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button type="button" id="genderMaleBtn" onclick="setGender('male')" class="py-3 px-4 rounded-2xl font-bold text-sm border-2 transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-mars text-lg"></i>
+                                <span data-i18n="genderMale">ذكر</span>
+                            </button>
+                            <button type="button" id="genderFemaleBtn" onclick="setGender('female')" class="py-3 px-4 rounded-2xl font-bold text-sm border-2 transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-venus text-lg"></i>
+                                <span data-i18n="genderFemale">أنثى</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Age, Weight, Height Grid -->
+                    <div class="grid grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-xs sm:text-sm font-bold mb-1.5 text-slate-700 dark:text-slate-300" data-i18n="labelAge">العمر (سنة)</label>
+                            <input type="number" id="inputAge" value="26" min="14" max="90" oninput="updateAllCalculations()" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 font-bold text-center focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs sm:text-sm font-bold mb-1.5 text-slate-700 dark:text-slate-300" data-i18n="labelWeight">الوزن (كجم)</label>
+                            <input type="number" id="inputWeight" value="78" min="35" max="250" step="0.5" oninput="updateAllCalculations()" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 font-bold text-center focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs sm:text-sm font-bold mb-1.5 text-slate-700 dark:text-slate-300" data-i18n="labelHeight">الطول (سم)</label>
+                            <input type="number" id="inputHeight" value="176" min="120" max="230" oninput="updateAllCalculations()" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 font-bold text-center focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                    </div>
+
+                    <!-- Activity Level -->
+                    <div>
+                        <label class="block text-sm font-bold mb-1.5 text-slate-700 dark:text-slate-300" data-i18n="labelActivity">مستوى النشاط اليومي</label>
+                        <select id="inputActivity" onchange="updateAllCalculations()" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <option value="1.2" data-i18n="actSedentary">خامل (عمل مكتبي، بدون تمرين)</option>
+                            <option value="1.375" data-i18n="actLight">نشاط خفيف (تمرين 1-3 أيام أسبوعياً)</option>
+                            <option value="1.55" selected data-i18n="actModerate">نشاط متوسط (تمرين 3-5 أيام أسبوعياً)</option>
+                            <option value="1.725" data-i18n="actActive">نشاط عالٍ (تمرين قوي 6-7 أيام أسبوعياً)</option>
+                            <option value="1.9" data-i18n="actSuper">نشاط فائق (مجهود بدني شاق أو تمرين مرتين يومياً)</option>
+                        </select>
+                    </div>
+
+                    <!-- Fitness Level (Beginner, Intermediate, Advanced) -->
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300" data-i18n="labelFitnessLevel">المستوى الرياضي (يحدد شدة التمارين)</label>
+                        <div class="grid grid-cols-3 gap-2.5">
+                            <button type="button" id="lvlBtn_beginner" onclick="setFitnessLevel('beginner')" class="py-2.5 px-2 rounded-xl font-bold text-xs sm:text-sm border-2 transition flex flex-col items-center gap-1">
+                                <i class="fa-solid fa-seedling"></i>
+                                <span data-i18n="lvlBeginner">مبتدئ</span>
+                            </button>
+                            <button type="button" id="lvlBtn_intermediate" onclick="setFitnessLevel('intermediate')" class="py-2.5 px-2 rounded-xl font-bold text-xs sm:text-sm border-2 transition flex flex-col items-center gap-1">
+                                <i class="fa-solid fa-fire"></i>
+                                <span data-i18n="lvlIntermediate">متوسط</span>
+                            </button>
+                            <button type="button" id="lvlBtn_advanced" onclick="setFitnessLevel('advanced')" class="py-2.5 px-2 rounded-xl font-bold text-xs sm:text-sm border-2 transition flex flex-col items-center gap-1">
+                                <i class="fa-solid fa-crown"></i>
+                                <span data-i18n="lvlAdvanced">متقدم</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Primary Goal -->
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300" data-i18n="labelGoal">الهدف الرئيسي</label>
+                        <div class="grid grid-cols-3 gap-2.5">
+                            <button type="button" id="goalBtn_cut" onclick="setGoal('cut')" class="py-3 px-2 rounded-xl font-bold text-xs sm:text-sm border-2 transition flex flex-col items-center gap-1">
+                                <i class="fa-solid fa-weight-scale"></i>
+                                <span data-i18n="goalCut">تنشيف / حرق دهون</span>
+                                <span class="text-[11px] opacity-75">-500 kcal</span>
+                            </button>
+                            <button type="button" id="goalBtn_maintain" onclick="setGoal('maintain')" class="py-3 px-2 rounded-xl font-bold text-xs sm:text-sm border-2 transition flex flex-col items-center gap-1">
+                                <i class="fa-solid fa-scale-balanced"></i>
+                                <span data-i18n="goalMaintain">ثبات وتحسين</span>
+                                <span class="text-[11px] opacity-75">0 kcal</span>
+                            </button>
+                            <button type="button" id="goalBtn_bulk" onclick="setGoal('bulk')" class="py-3 px-2 rounded-xl font-bold text-xs sm:text-sm border-2 transition flex flex-col items-center gap-1">
+                                <i class="fa-solid fa-dumbbell"></i>
+                                <span data-i18n="goalBulk">تضخيم وبناء عضل</span>
+                                <span class="text-[11px] opacity-75">+400 kcal</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right/Left Results Dashboard (7 cols) -->
+                <div class="lg:col-span-7 bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-xl border border-slate-200/80 dark:border-slate-800 flex flex-col justify-between space-y-6">
+                    
+                    <!-- Top Energy Cards (BMR, TDEE, Target) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700/70">
+                            <div class="flex items-center justify-between text-xs font-bold text-slate-500 dark:text-slate-400">
+                                <span data-i18n="resBMR">معدل الأيض الأساسي (BMR)</span>
+                                <i class="fa-solid fa-bed-pulse text-slate-400"></i>
+                            </div>
+                            <div class="mt-2 flex items-baseline gap-1">
+                                <span id="valBMR" class="text-2xl font-black text-slate-800 dark:text-white">1,765</span>
+                                <span class="text-xs font-semibold text-slate-500" data-i18n="unitKcal">سعرة/يوم</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 mt-1" data-i18n="resBMRDesc">سعرات الجسم وقت الراحة التامة</p>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700/70">
+                            <div class="flex items-center justify-between text-xs font-bold text-slate-500 dark:text-slate-400">
+                                <span data-i18n="resTDEE">سعرات الثبات (TDEE)</span>
+                                <i class="fa-solid fa-person-running text-sky-500"></i>
+                            </div>
+                            <div class="mt-2 flex items-baseline gap-1">
+                                <span id="valTDEE" class="text-2xl font-black text-sky-600 dark:text-sky-400">2,735</span>
+                                <span class="text-xs font-semibold text-slate-500" data-i18n="unitKcal">سعرة/يوم</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 mt-1" data-i18n="resTDEEDesc">إجمالي استهلاكك اليومي مع النشاط</p>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/20">
+                            <div class="flex items-center justify-between text-xs font-bold text-emerald-100">
+                                <span data-i18n="resTarget">السعرات المستهدفة لهدفك</span>
+                                <i class="fa-solid fa-bullseye"></i>
+                            </div>
+                            <div class="mt-2 flex items-baseline gap-1">
+                                <span id="valTargetCal" class="text-3xl font-black">2,235</span>
+                                <span class="text-xs font-semibold text-emerald-100" data-i18n="unitKcal">سعرة/يوم</span>
+                            </div>
+                            <p id="valGoalNote" class="text-[11px] text-emerald-100 mt-1 font-medium">عجز 500 سعرة لحرق الدهون بأمان</p>
+                        </div>
+                    </div>
+
+                    <!-- Full Nutritional Breakdown (Macros) -->
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-base font-extrabold flex items-center gap-2">
+                                <i class="fa-solid fa-chart-pie text-emerald-500"></i>
+                                <span data-i18n="macrosHeading">التوزيع الكامل للقيم الغذائية اليومية (الماكروز)</span>
+                            </h4>
+                            <span id="activeDietBadge" class="text-xs font-bold px-3 py-1 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                                نظام متوازن
+                            </span>
+                        </div>
+
+                        <!-- Combined Stacked Progress Bar -->
+                        <div class="h-4 w-full rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden flex p-0.5 gap-0.5">
+                            <div id="barProtein" class="h-full bg-rose-500 rounded-s-full transition-all duration-500" style="width: 30%"></div>
+                            <div id="barCarbs" class="h-full bg-amber-500 transition-all duration-500" style="width: 40%"></div>
+                            <div id="barFats" class="h-full bg-sky-500 rounded-e-full transition-all duration-500" style="width: 30%"></div>
+                        </div>
+
+                        <!-- 3 Macro Cards -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                            <!-- Protein -->
+                            <div class="p-4 rounded-2xl bg-rose-500/5 border border-rose-500/20 flex flex-col justify-between">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-bold text-rose-600 dark:text-rose-400 flex items-center gap-1.5">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span>
+                                        <span data-i18n="macroProtein">البروتين (Protein)</span>
+                                    </span>
+                                    <span id="pctProtein" class="text-xs font-extrabold px-2 py-0.5 rounded-md bg-rose-500/10 text-rose-600 dark:text-rose-400">30%</span>
+                                </div>
+                                <div class="my-2">
+                                    <span id="gramProtein" class="text-2xl font-black text-slate-800 dark:text-white">168</span>
+                                    <span class="text-xs font-bold text-slate-500" data-i18n="unitGram">جرام</span>
+                                </div>
+                                <div id="kcalProtein" class="text-[11px] text-slate-500 dark:text-slate-400">672 سعرة حرارية (4 سعرة/جم)</div>
+                            </div>
+
+                            <!-- Carbs -->
+                            <div class="p-4 rounded-2xl bg-amber-500/5 border border-amber-500/20 flex flex-col justify-between">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span>
+                                        <span data-i18n="macroCarbs">الكربوهيدرات (Carbs)</span>
+                                    </span>
+                                    <span id="pctCarbs" class="text-xs font-extrabold px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400">40%</span>
+                                </div>
+                                <div class="my-2">
+                                    <span id="gramCarbs" class="text-2xl font-black text-slate-800 dark:text-white">224</span>
+                                    <span class="text-xs font-bold text-slate-500" data-i18n="unitGram">جرام</span>
+                                </div>
+                                <div id="kcalCarbs" class="text-[11px] text-slate-500 dark:text-slate-400">894 سعرة حرارية (4 سعرة/جم)</div>
+                            </div>
+
+                            <!-- Healthy Fats -->
+                            <div class="p-4 rounded-2xl bg-sky-500/5 border border-sky-500/20 flex flex-col justify-between">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-bold text-sky-600 dark:text-sky-400 flex items-center gap-1.5">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-sky-500 inline-block"></span>
+                                        <span data-i18n="macroFats">الدهون الصحية (Fats)</span>
+                                    </span>
+                                    <span id="pctFats" class="text-xs font-extrabold px-2 py-0.5 rounded-md bg-sky-500/10 text-sky-600 dark:text-sky-400">30%</span>
+                                </div>
+                                <div class="my-2">
+                                    <span id="gramFats" class="text-2xl font-black text-slate-800 dark:text-white">75</span>
+                                    <span class="text-xs font-bold text-slate-500" data-i18n="unitGram">جرام</span>
+                                </div>
+                                <div id="kcalFats" class="text-[11px] text-slate-500 dark:text-slate-400">671 سعرة حرارية (9 سعرة/جم)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Micro & Health Essentials (Water, Fiber, BMI) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-slate-200 dark:border-slate-800">
+                        <div class="flex items-center gap-3 p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50">
+                            <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-droplet"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400" data-i18n="labelWater">احتياج الماء اليومي</div>
+                                <div id="valWater" class="text-sm font-extrabold">3.1 لتر (13 كوب)</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-wheat-awn"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400" data-i18n="labelFiber">الألياف الغذائية (Fiber)</div>
+                                <div id="valFiber" class="text-sm font-extrabold">31 جرام / يوم</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50">
+                            <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-heart-pulse"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400" data-i18n="labelBMI">مؤشر كتلة الجسم (BMI)</div>
+                                <div id="valBMI" class="text-sm font-extrabold">25.2 (طبيعي)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SECTION 2: INTERACTIVE DIET & MEAL PLANNER
+             ========================================== -->
+        <section id="section-diet" class="scroll-mt-24 space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center font-bold text-lg">
+                        2
+                    </div>
+                    <div>
+                        <h3 class="text-xl sm:text-2xl font-extrabold" data-i18n="sec2Title">اختيار النظام الغذائي وجدول الوجبات الذكي</h3>
+                        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400" data-i18n="sec2Sub">يتم حساب كميات الطعام بالجرام تلقائياً لتطابق سعراتك، مع إمكانية تبديل أي وجبة ببدائل متنوعة</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="randomizeAllMeals()" class="text-xs font-bold px-3.5 py-2 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20 border border-amber-500/20 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-shuffle"></i>
+                        <span data-i18n="shuffleMealsBtn">تغيير جميع الوجبات</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Diet Type Selector Tabs -->
+            <div id="dietTabsContainer" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                <!-- Populated dynamically by JS -->
+            </div>
+
+            <!-- Selected Diet Info Banner -->
+            <div id="dietInfoBanner" class="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-500/10 via-emerald-500/5 to-transparent border border-amber-500/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <!-- Populated dynamically by JS -->
+            </div>
+
+            <!-- Daily Meal Cards Grid (Breakfast, Lunch, Dinner, Snacks) -->
+            <div id="mealsGridContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Populated dynamically by JS -->
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SECTION 3: WORKOUT SPLIT & TRAINING SELECTOR
+             ========================================== -->
+        <section id="section-workout" class="scroll-mt-24 space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center font-bold text-lg">
+                        3
+                    </div>
+                    <div>
+                        <h3 class="text-xl sm:text-2xl font-extrabold" data-i18n="sec3Title">اختيار نظام التمارين الرياضية وجدول التدريب الأسبوعي</h3>
+                        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400" data-i18n="sec3Sub">اختر بين الكارديو (HIIT / LISS)، المقاومة في المنزل، أو أنظمة الجيم (Pro Split, PPL, Arnold Split)</p>
+                    </div>
+                </div>
+
+                <!-- Built-in Interactive Rest Timer -->
+                <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700 self-start sm:self-auto">
+                    <div class="flex items-center gap-2 px-3 py-1">
+                        <i class="fa-solid fa-stopwatch text-rose-500"></i>
+                        <span class="text-xs font-bold text-slate-500 dark:text-slate-400" data-i18n="timerLabel">مؤقت الراحة:</span>
+                        <span id="restTimerDisplay" class="font-mono text-base font-black text-emerald-600 dark:text-emerald-400">01:00</span>
+                    </div>
+                    <button onclick="startRestTimer(60)" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-white dark:bg-slate-700 hover:bg-emerald-500 hover:text-white transition">60s</button>
+                    <button onclick="startRestTimer(90)" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-white dark:bg-slate-700 hover:bg-emerald-500 hover:text-white transition">90s</button>
+                    <button onclick="stopRestTimer()" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white transition">
+                        <i class="fa-solid fa-stop"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Smart Recommendation Banner based on Fitness Level -->
+            <div id="smartWorkoutRecBanner" class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <!-- Populated dynamically by JS -->
+            </div>
+
+            <!-- 6 Workout Programs Selector Cards -->
+            <div id="workoutSplitsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Populated dynamically by JS -->
+            </div>
+
+            <!-- Selected Workout Program Detail & Weekly Schedule -->
+            <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-7 shadow-xl border border-slate-200/80 dark:border-slate-800 space-y-6">
+                
+                <!-- Split Header & Level Summary -->
+                <div id="selectedSplitHeader" class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-200 dark:border-slate-800">
+                    <!-- Populated dynamically by JS -->
+                </div>
+
+                <!-- 7-Day Interactive Selector Bar -->
+                <div>
+                    <div class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-3" data-i18n="selectDayPrompt">اختر اليوم من الجدول الأسبوعي لعرض التمارين التفصيلية:</div>
+                    <div id="weekDaysContainer" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5">
+                        <!-- Populated dynamically by JS -->
+                    </div>
+                </div>
+
+                <!-- Active Day Exercises Table / Cards -->
+                <div id="dayExercisesContainer" class="space-y-4">
+                    <!-- Populated dynamically by JS -->
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer with Required Credit -->
+    <footer class="mt-16 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-8 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center text-center space-y-3">
+            <div class="inline-flex items-center gap-2.5 px-6 py-3 rounded-2xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-emerald-500/10 border border-emerald-500/30 shadow-sm">
+                <i class="fa-solid fa-wand-magic-sparkles text-emerald-500"></i>
+                <p class="text-base sm:text-lg font-extrabold bg-gradient-to-r from-emerald-600 to-teal-500 dark:from-emerald-400 dark:to-teal-300 bg-clip-text text-transparent">
+                    تصميم محمد عوض خير بمساعده Gemini 4 Argon
+                </p>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="footerDisclaimer">
+                جميع الحسابات الغذائية والجداول التدريبية مبنية على معادلات علمية معتمدة (Mifflin-St Jeor) لتساعدك في الوصول لأفضل نسخة من نفسك.
+            </p>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+         JAVASCRIPT LOGIC & BILINGUAL DATA ENGINE
+         ========================================== -->
+    <script>
+        // --- APPLICATION STATE ---
+        const state = {
+            lang: 'ar',             // 'ar' or 'en'
+            darkMode: true,         // true or false
+            gender: 'male',         // 'male' or 'female'
+            age: 26,
+            weight: 78,
+            height: 176,
+            activity: 1.55,
+            fitnessLevel: 'intermediate', // 'beginner', 'intermediate', 'advanced'
+            goal: 'cut',            // 'cut', 'maintain', 'bulk'
+            selectedDiet: 'balanced', // 'balanced', 'high_protein', 'keto', 'mediterranean', 'if_16_8'
+            mealIndices: {
+                breakfast: 0,
+                lunch: 0,
+                dinner: 0,
+                snack: 0
+            },
+            eatenMeals: {
+                breakfast: false,
+                lunch: false,
+                dinner: false,
+                snack: false
+            },
+            selectedSplit: 'ppl',   // 'hiit', 'liss', 'home', 'pro_split', 'ppl', 'arnold'
+            selectedDayIndex: 0,    // 0 to 6
+            completedExercises: {}, // key: `${split}_${day}_${exIdx}`
+            timerInterval: null,
+            timerSeconds: 60
+        };
+
+        // --- UI TRANSLATIONS (ARABIC & ENGLISH) ---
+        const i18n = {
+            ar: {
+                appTitle: "فيت نيوتري برو",
+                appSubtitle: "مخطط التغذية الدقيق والتمارين الذكي الشامل",
+                navCalculator: "حاسبة السعرات",
+                navDiet: "النظام الغذائي",
+                navWorkout: "جدول التمارين",
+                heroBadge: "نظام ذكي متكامل مصمم خصيصاً لهدفك ومستواك",
+                heroTitle: "صمّم نظامك الغذائي بالسعرات والماكروز وجدول تمارينك الاحترافي في ثوانٍ!",
+                heroDesc: "أدخل بياناتك الشخصية ليقوم التطبيق بحساب احتياجك اليومي الدقيق من السعرات الحرارية وكامل القيم الغذائية (بروتين، كارب، دهون صحية، ألياف، ومياه)، مع اقتراح أفضل نظام تدريبي (كارديو HIIT/LISS، مقاومة منزلية، أو جيم: Pro Split, PPL, Arnold Split) مناسب لمستواك.",
+                heroCalLabel: "السعرات المستهدفة",
+                heroProtLabel: "البروتين اليومي",
+                heroDietLabel: "النظام الغذائي",
+                heroSplitLabel: "نظام التمرين",
+                sec1Title: "البيانات الشخصية وحاسبة السعرات والقيم الغذائية",
+                sec1Sub: "تعديل أي قيمة يقوم بتحديث السعرات والوجبات وجدول التمارين تلقائياً",
+                resetBtn: "إعادة ضبط القيم",
+                labelGender: "النوع (الجنس)",
+                genderMale: "ذكر",
+                genderFemale: "أنثى",
+                labelAge: "العمر (سنة)",
+                labelWeight: "الوزن (كجم)",
+                labelHeight: "الطول (سم)",
+                labelActivity: "مستوى النشاط اليومي",
+                actSedentary: "خامل (عمل مكتبي، بدون تمرين)",
+                actLight: "نشاط خفيف (تمرين 1-3 أيام أسبوعياً)",
+                actModerate: "نشاط متوسط (تمرين 3-5 أيام أسبوعياً)",
+                actActive: "نشاط عالٍ (تمرين قوي 6-7 أيام أسبوعياً)",
+                actSuper: "نشاط فائق (مجهود بدني شاق أو تمرين مرتين يومياً)",
+                labelFitnessLevel: "المستوى الرياضي (يحدد شدة التمارين)",
+                lvlBeginner: "مبتدئ",
+                lvlIntermediate: "متوسط",
+                lvlAdvanced: "متقدم",
+                labelGoal: "الهدف الرئيسي",
+                goalCut: "تنشيف / حرق دهون",
+                goalMaintain: "ثبات وتحسين",
+                goalBulk: "تضخيم وبناء عضل",
+                resBMR: "معدل الأيض الأساسي (BMR)",
+                resBMRDesc: "سعرات الجسم وقت الراحة التامة",
+                resTDEE: "سعرات الثبات (TDEE)",
+                resTDEEDesc: "إجمالي استهلاكك اليومي مع النشاط",
+                resTarget: "السعرات المستهدفة لهدفك",
+                unitKcal: "سعرة/يوم",
+                unitGram: "جرام",
+                macrosHeading: "التوزيع الكامل للقيم الغذائية اليومية (الماكروز)",
+                macroProtein: "البروتين (Protein)",
+                macroCarbs: "الكربوهيدرات (Carbs)",
+                macroFats: "الدهون الصحية (Fats)",
+                labelWater: "احتياج الماء اليومي",
+                labelFiber: "الألياف الغذائية (Fiber)",
+                labelBMI: "مؤشر كتلة الجسم (BMI)",
+                sec2Title: "اختيار النظام الغذائي وجدول الوجبات الذكي",
+                sec2Sub: "يتم حساب كميات الطعام بالجرام تلقائياً لتطابق سعراتك، مع إمكانية تبديل أي وجبة ببدائل متنوعة",
+                shuffleMealsBtn: "تغيير جميع الوجبات",
+                sec3Title: "اختيار نظام التمارين الرياضية وجدول التدريب الأسبوعي",
+                sec3Sub: "اختر بين الكارديو (HIIT / LISS)، المقاومة في المنزل، أو أنظمة الجيم (Pro Split, PPL, Arnold Split)",
+                timerLabel: "مؤقت الراحة:",
+                selectDayPrompt: "اختر اليوم من الجدول الأسبوعي لعرض التمارين التفصيلية:",
+                footerDisclaimer: "جميع الحسابات الغذائية والجداول التدريبية مبنية على معادلات علمية معتمدة (Mifflin-St Jeor) لتساعدك في الوصول لأفضل نسخة من نفسك.",
+                swapMealBtn: "تبديل الوجبة",
+                markEaten: "تم التناول",
+                GoalNoteCut: "عجز 500 سعرة لحرق الدهون الصافية بأمان",
+                GoalNoteMaintain: "توازن في السعرات للحفاظ على الوزن وتحسين الأداء",
+                GoalNoteBulk: "فائض 400 سعرة لبناء الكتلة العضلية الصافية",
+                bmiUnder: "نحافة",
+                bmiNormal: "وزن مثالي",
+                bmiOver: "زيادة وزن",
+                bmiObese: "سمنة",
+                recBadge: "مُوصى به لمستواك",
+                setsLabel: "المجموعات",
+                repsLabel: "التكرارات",
+                restLabel: "الراحة",
+                tempoLabel: "الأداء (Tempo)",
+                restDayTitle: "يوم راحة واستشفاء عضلي (Active Recovery)",
+                restDayDesc: "العضلات تنمو وتتطور أثناء الراحة والنوم الجيد. احرص على شرب المياه، تناول احتياجك من البروتين، والمشي الخفيف لمدة 20-30 دقيقة.",
+                levelTipPrefix: "توجيه لمستوى"
+            },
+            en: {
+                appTitle: "FitNutri Pro",
+                appSubtitle: "Smart Nutrition & Comprehensive Workout Planner",
+                navCalculator: "Calorie Calculator",
+                navDiet: "Diet & Meal Plan",
+                navWorkout: "Workout Splits",
+                heroBadge: "All-in-One Smart System Tailored to Your Goal & Fitness Level",
+                heroTitle: "Design Your Exact Macro Meal Plan & Pro Workout Routine in Seconds!",
+                heroDesc: "Enter your body metrics to calculate your exact daily calories and complete nutritional breakdown (Protein, Carbs, Healthy Fats, Fiber, & Water), plus unlock smart workout routines (HIIT, LISS, Home Resistance, Pro Split, Push Pull Legs, or Arnold Split) customized to your fitness level.",
+                heroCalLabel: "Target Calories",
+                heroProtLabel: "Daily Protein",
+                heroDietLabel: "Diet Style",
+                heroSplitLabel: "Workout Split",
+                sec1Title: "Personal Profile & Calorie / Macro Calculator",
+                sec1Sub: "Adjusting any value automatically updates your macros, meal portions, and training volume",
+                resetBtn: "Reset Defaults",
+                labelGender: "Gender",
+                genderMale: "Male",
+                genderFemale: "Female",
+                labelAge: "Age (yrs)",
+                labelWeight: "Weight (kg)",
+                labelHeight: "Height (cm)",
+                labelActivity: "Daily Activity Level",
+                actSedentary: "Sedentary (Desk job, little to no exercise)",
+                actLight: "Lightly Active (Light exercise 1-3 days/week)",
+                actModerate: "Moderately Active (Moderate training 3-5 days/week)",
+                actActive: "Very Active (Hard training 6-7 days/week)",
+                actSuper: "Extra Active (Intense physical job or 2x/day training)",
+                labelFitnessLevel: "Fitness Experience Level (Adapts Workout Volume)",
+                lvlBeginner: "Beginner",
+                lvlIntermediate: "Intermediate",
+                lvlAdvanced: "Advanced",
+                labelGoal: "Primary Fitness Goal",
+                goalCut: "Fat Loss / Cutting",
+                goalMaintain: "Maintenance / Recomp",
+                goalBulk: "Muscle Gain / Bulking",
+                resBMR: "Basal Metabolic Rate (BMR)",
+                resBMRDesc: "Calories burned at complete rest",
+                resTDEE: "Maintenance Calories (TDEE)",
+                resTDEEDesc: "Total daily energy expenditure with activity",
+                resTarget: "Daily Target Calories",
+                unitKcal: "kcal/day",
+                unitGram: "g",
+                macrosHeading: "Complete Daily Nutritional Breakdown (Macros)",
+                macroProtein: "Protein",
+                macroCarbs: "Carbohydrates",
+                macroFats: "Healthy Fats",
+                labelWater: "Daily Water Intake",
+                labelFiber: "Dietary Fiber",
+                labelBMI: "Body Mass Index (BMI)",
+                sec2Title: "Interactive Diet Selector & Smart Meal Plan",
+                sec2Sub: "Food portions automatically scale in grams to match your target calories, with instant meal swapping",
+                shuffleMealsBtn: "Shuffle All Meals",
+                sec3Title: "Workout Program & Training Split Selector",
+                sec3Sub: "Choose from Cardio (HIIT / LISS), Home Resistance, or Gym Splits (Pro Split, PPL, Arnold Split)",
+                timerLabel: "Rest Timer:",
+                selectDayPrompt: "Select a day from the weekly schedule to view detailed exercises:",
+                footerDisclaimer: "All nutritional calculations and training splits are based on verified sports science formulas (Mifflin-St Jeor) to help you achieve peak results.",
+                swapMealBtn: "Swap Option",
+                markEaten: "Completed",
+                GoalNoteCut: "500 kcal deficit for steady, sustainable fat loss",
+                GoalNoteMaintain: "Balanced calories for weight maintenance & body recomposition",
+                GoalNoteBulk: "400 kcal surplus for lean muscle hypertrophy",
+                bmiUnder: "Underweight",
+                bmiNormal: "Normal",
+                bmiOver: "Overweight",
+                bmiObese: "Obese",
+                recBadge: "Recommended for You",
+                setsLabel: "Sets",
+                repsLabel: "Reps",
+                restLabel: "Rest",
+                tempoLabel: "Tempo",
+                restDayTitle: "Active Recovery & Rest Day",
+                restDayDesc: "Muscles repair and grow during rest and quality sleep. Stay hydrated, hit your daily protein target, and do 20-30 mins of light walking or mobility stretching.",
+                levelTipPrefix: "Coaching Note for"
+            }
+        };
+
+        // --- DIET SYSTEMS & MEAL DATABASE ---
+        const dietSystems = {
+            balanced: {
+                id: 'balanced',
+                icon: 'fa-scale-balanced',
+                ratios: { p: 0.30, c: 0.40, f: 0.30 },
+                ar: {
+                    name: "نظام متوازن (Balanced)",
+                    short: "متوازن",
+                    desc: "توزيع مثالي ومستدام يجمع بين البروتين الكافي لبناء العضلات والكربوهيدرات المعقدة للطاقة والدهون الصحية.",
+                    window: "توزيع الوجبات على مدار اليوم كل 3-4 ساعات"
+                },
+                en: {
+                    name: "Balanced Diet",
+                    short: "Balanced",
+                    desc: "Sustainable, well-rounded macro distribution combining lean proteins, complex carbs for training energy, and essential fats.",
+                    window: "Meals spaced evenly every 3-4 hours throughout the day"
+                }
+            },
+            high_protein: {
+                id: 'high_protein',
+                icon: 'fa-drumstick-bite',
+                ratios: { p: 0.40, c: 0.35, f: 0.25 },
+                ar: {
+                    name: "عالي البروتين (High Protein)",
+                    short: "عالي البروتين",
+                    desc: "مثالي للاعبي المقاومة وبناء العضلات أو الحفاظ على الكتلة العضلية أثناء التنشيف مع زيادة الشبع.",
+                    window: "التركيز على البروتين في كل وجبة وحول أوقات التمرين"
+                },
+                en: {
+                    name: "High Protein",
+                    short: "High Protein",
+                    desc: "Optimal for hypertrophy, strength athletes, and maximizing muscle retention and satiety during fat loss phases.",
+                    window: "High protein intake prioritized around pre/post workout windows"
+                }
+            },
+            keto: {
+                id: 'keto',
+                icon: 'fa-bacon',
+                ratios: { p: 0.30, c: 0.10, f: 0.60 },
+                ar: {
+                    name: "لو كارب / كيتو (Low Carb / Keto)",
+                    short: "لو كارب / كيتو",
+                    desc: "تقليل الكربوهيدرات لأقصى درجة لتحفيز الجسم على استخدام الدهون كمصدر رئيسي للطاقة وضبط الإنسولين.",
+                    window: "وجبات مشبعة غنية بالدهون الصحية والخضروات الورقية"
+                },
+                en: {
+                    name: "Low Carb / Keto",
+                    short: "Low Carb / Keto",
+                    desc: "Minimizes carbohydrates to shift metabolism toward fat oxidation and stable blood sugar levels.",
+                    window: "High-satiety meals rich in healthy fats, avocados, olive oil & greens"
+                }
+            },
+            mediterranean: {
+                id: 'mediterranean',
+                icon: 'fa-fish-fins',
+                ratios: { p: 0.25, c: 0.45, f: 0.30 },
+                ar: {
+                    name: "نظام البحر المتوسط (Mediterranean)",
+                    short: "البحر المتوسط",
+                    desc: "أفضل الأنظمة لصحة القلب والحيوية، يعتمد على زيت الزيتون، الأسماك، الحبوب الكاملة، والخضروات الطازجة.",
+                    window: "غني بمضادات الأكسدة والأوميغا 3 والألياف الطبيعية"
+                },
+                en: {
+                    name: "Mediterranean Diet",
+                    short: "Mediterranean",
+                    desc: "Heart-healthy lifestyle focused on extra virgin olive oil, fish, whole grains, legumes, and fresh vegetables.",
+                    window: "Rich in Omega-3 fatty acids, antioxidants, and natural fiber"
+                }
+            },
+            if_16_8: {
+                id: 'if_16_8',
+                icon: 'fa-clock',
+                ratios: { p: 0.35, c: 0.35, f: 0.30 },
+                ar: {
+                    name: "الصيام المتقطع 16/8 (Intermittent Fasting)",
+                    short: "صيام متقطع 16/8",
+                    desc: "صيام 16 ساعة (يُسمح بالماء والقهوة والشاي بدون سكر) وتناول احتياجك الكامل خلال نافذة 8 ساعات.",
+                    window: "نافذة الإفطار المقترحة: من 12:00 ظهراً حتى 8:00 مساءً"
+                },
+                en: {
+                    name: "Intermittent Fasting (16/8)",
+                    short: "IF 16/8",
+                    desc: "16 hours of fasting (water, black coffee, unsweetened tea allowed) followed by an 8-hour feeding window.",
+                    window: "Suggested Eating Window: 12:00 PM to 8:00 PM"
+                }
+            }
+        };
+
+        // Meal Options Template (Base portions calibrated to a 2000 kcal reference day, dynamically scaled to user's Target Calories!)
+        // Meal Calorie Split: Breakfast 25%, Lunch 35%, Dinner 25%, Snack 15%
+        const mealsDatabase = {
+            breakfast: {
+                share: 0.25,
+                icon: 'fa-mug-saucer',
+                color: 'amber',
+                arTitle: "وجبة الإفطار (أو الوجبة الأولى)",
+                enTitle: "Breakfast (Meal 1)",
+                options: [
+                    {
+                        arName: "شوفان بالحليب مع البيض المسلوق والمكسرات",
+                        enName: "Protein Oatmeal Bowl & Boiled Eggs",
+                        items: [
+                            { ar: "شوفان كامل الحبة", en: "Rolled Oats", baseG: 60, unitAr: "جم", unitEn: "g" },
+                            { ar: "بيض كامل مسلوق أو أومليت", en: "Whole Eggs (Boiled/Omelet)", baseG: 150, unitAr: "جم (3 بيضات)", unitEn: "g (3 eggs)" },
+                            { ar: "حليب قليل الدسم", en: "Low-Fat Milk", baseG: 200, unitAr: "مل", unitEn: "ml" },
+                            { ar: "لوز نيء أو جوز", en: "Raw Almonds / Walnuts", baseG: 15, unitAr: "جم", unitEn: "g" }
+                        ]
+                    },
+                    {
+                        arName: "شكشوكة بيض بزيت الزيتون مع خبز أسمر وجبن قريش",
+                        enName: "Mediterranean Eggs, Cottage Cheese & Whole Wheat Bread",
+                        items: [
+                            { ar: "جبن قريش أو جبن فيتا لايت", en: "Cottage Cheese", baseG: 120, unitAr: "جم", unitEn: "g" },
+                            { ar: "بيض مخفوق بالخضار", en: "Scrambled Eggs with Veggies", baseG: 100, unitAr: "جم (بيضتان)", unitEn: "g (2 eggs)" },
+                            { ar: "خبز الحبوب الكاملة / توست أسمر", en: "Whole Grain Bread", baseG: 65, unitAr: "جم", unitEn: "g" },
+                            { ar: "زيت زيتون بكر ممتاز", en: "Extra Virgin Olive Oil", baseG: 10, unitAr: "مل", unitEn: "ml" }
+                        ]
+                    },
+                    {
+                        arName: "بان كيك البروتين بالموز وزبدة الفول السوداني الطبيعية",
+                        enName: "Protein Banana Pancakes & Peanut Butter",
+                        items: [
+                            { ar: "شوفان مطحون", en: "Oat Flour", baseG: 55, unitAr: "جم", unitEn: "g" },
+                            { ar: "بياض بيض + بيضة كاملة", en: "Egg Whites + 1 Whole Egg", baseG: 140, unitAr: "جم", unitEn: "g" },
+                            { ar: "موز طازج", en: "Fresh Banana", baseG: 90, unitAr: "جم", unitEn: "g" },
+                            { ar: "زبدة فول سوداني طبيعية", en: "Natural Peanut Butter", baseG: 18, unitAr: "جم", unitEn: "g" }
+                        ]
+                    }
+                ]
+            },
+            lunch: {
+                share: 0.35,
+                icon: 'fa-bowl-rice',
+                color: 'emerald',
+                arTitle: "وجبة الغداء (الوجبة الرئيسية)",
+                enTitle: "Lunch (Main Meal)",
+                options: [
+                    {
+                        arName: "صدور دجاج مشوية مع أرز بسمتي وسلطة خضراء بزيت الزيتون",
+                        enName: "Grilled Chicken Breast, Basmati Rice & Olive Oil Salad",
+                        items: [
+                            { ar: "صدور دجاج مشوية (وزن بعد الطهي)", en: "Grilled Chicken Breast (Cooked)", baseG: 180, unitAr: "جم", unitEn: "g" },
+                            { ar: "أرز بسمتي مطهو على البخار", en: "Steamed Basmati Rice", baseG: 190, unitAr: "جم", unitEn: "g" },
+                            { ar: "سلطة خضراء متنوعة (خيار، طماطم، جرجير)", en: "Mixed Green Salad", baseG: 200, unitAr: "جم", unitEn: "g" },
+                            { ar: "زيت زيتون يضاف للسلطة", en: "Olive Oil Dressing", baseG: 12, unitAr: "مل", unitEn: "ml" }
+                        ]
+                    },
+                    {
+                        arName: "لحم بقري صافي مشوي مع بطاطا حلوة مشوية وبروكلي",
+                        enName: "Lean Beef Steak, Baked Sweet Potato & Broccoli",
+                        items: [
+                            { ar: "ستيك لحم بقري قليل الدهن (مطهو)", en: "Lean Beef Sirloin (Cooked)", baseG: 170, unitAr: "جم", unitEn: "g" },
+                            { ar: "بطاطا حلوة أو بطاطس مشوية بالفرن", en: "Baked Sweet Potato", baseG: 220, unitAr: "جم", unitEn: "g" },
+                            { ar: "بروكلي وفاصوليا خضراء سوتيه", en: "Steamed Broccoli & Green Beans", baseG: 150, unitAr: "جم", unitEn: "g" }
+                        ]
+                    },
+                    {
+                        arName: "سمك سلمون أو بلطي مشوي مع الكينوا/الأرز والخضار",
+                        enName: "Grilled Salmon / Fish Fillet with Quinoa & Veggies",
+                        items: [
+                            { ar: "فيليه سمك سلمون أو سمك مشوي", en: "Grilled Fish / Salmon Fillet", baseG: 185, unitAr: "جم", unitEn: "g" },
+                            { ar: "أرز بني أو كينوا مطهوة", en: "Cooked Brown Rice or Quinoa", baseG: 175, unitAr: "جم", unitEn: "g" },
+                            { ar: "سلطة خضراء مع نصف حبة أفوكادو", en: "Green Salad with Avocado", baseG: 160, unitAr: "جم", unitEn: "g" }
+                        ]
+                    }
+                ]
+            },
+            dinner: {
+                share: 0.25,
+                icon: 'fa-plate-wheat',
+                color: 'sky',
+                arTitle: "وجبة العشاء (استشفاء ليلي)",
+                enTitle: "Dinner (Evening Recovery)",
+                options: [
+                    {
+                        arName: "سلطة تونة بالخضار والذرة الحلوة وزيت الزيتون",
+                        enName: "High-Protein Tuna Salad with Sweet Corn & Olive Oil",
+                        items: [
+                            { ar: "تونة مصفاة من المحلول المائي", en: "Canned Tuna in Water (Drained)", baseG: 140, unitAr: "جم", unitEn: "g" },
+                            { ar: "بطاطس مسلوقة أو ذرة حلوة", en: "Boiled Potato or Sweet Corn", baseG: 130, unitAr: "جم", unitEn: "g" },
+                            { ar: "خس وخيار وفلفل ألوان", en: "Crisp Lettuce, Cucumber & Peppers", baseG: 180, unitAr: "جم", unitEn: "g" },
+                            { ar: "زيت زيتون وعصير ليمون", en: "Olive Oil & Lemon", baseG: 10, unitAr: "مل", unitEn: "ml" }
+                        ]
+                    },
+                    {
+                        arName: "شرائح ديك رومي أو دجاج بارد مع جبن قريش وتوست",
+                        enName: "Turkey / Chicken Breast Bowl & Cottage Cheese",
+                        items: [
+                            { ar: "شرائح صدور دجاج أو رومي مشوية", en: "Sliced Turkey / Chicken Breast", baseG: 130, unitAr: "جم", unitEn: "g" },
+                            { ar: "جبن قريش غني بالكازين", en: "Cottage Cheese (Slow-digesting Casein)", baseG: 100, unitAr: "جم", unitEn: "g" },
+                            { ar: "خبز توست أسمر", en: "Whole Wheat Toast", baseG: 50, unitAr: "جم", unitEn: "g" },
+                            { ar: "حفنة زيتون أخضر أو أسود", en: "Green/Black Olives", baseG: 30, unitAr: "جم", unitEn: "g" }
+                        ]
+                    },
+                    {
+                        arName: "أومليت بياض البيض بالسبانخ والمشروم والجبن اللايت",
+                        enName: "Spinach & Mushroom Egg Omelet with Light Cheese",
+                        items: [
+                            { ar: "بيض كامل + بياض بيض", en: "Whole Eggs + Egg Whites", baseG: 180, unitAr: "جم", unitEn: "g" },
+                            { ar: "سبانخ طازجة ومشروم شرائح", en: "Fresh Spinach & Sliced Mushrooms", baseG: 140, unitAr: "جم", unitEn: "g" },
+                            { ar: "جبن موزاريلا أو شيدر قليل الدسم", en: "Low-Fat Mozzarella Cheese", baseG: 35, unitAr: "جم", unitEn: "g" },
+                            { ar: "خبز شوفان صحي", en: "Oat Flatbread", baseG: 45, unitAr: "جم", unitEn: "g" }
+                        ]
+                    }
+                ]
+            },
+            snack: {
+                share: 0.15,
+                icon: 'fa-apple-whole',
+                color: 'purple',
+                arTitle: "سناك الطاقة (قبل أو بعد التمرين)",
+                enTitle: "Energy Snack (Pre / Post Workout)",
+                options: [
+                    {
+                        arName: "زبادي يوناني بالتوت والمكسرات النيئة",
+                        enName: "Greek Yogurt Parfait with Berries & Mixed Nuts",
+                        items: [
+                            { ar: "زبادي يوناني عالي البروتين", en: "Plain Greek Yogurt", baseG: 170, unitAr: "جم", unitEn: "g" },
+                            { ar: "فراولة أو توت طازج", en: "Strawberries / Blueberries", baseG: 80, unitAr: "جم", unitEn: "g" },
+                            { ar: "مكسرات مشكلة نيئة (لوز، كاجو، عين جمل)", en: "Raw Mixed Nuts", baseG: 20, unitAr: "جم", unitEn: "g" }
+                        ]
+                    },
+                    {
+                        arName: "سكوب واي بروتين (أو حليب بروتين) مع تفاحة وزبدة لوز",
+                        enName: "Whey Protein Shake, Fresh Apple & Almond Butter",
+                        items: [
+                            { ar: "واي بروتين أو مشروب حليب عالي البروتين", en: "Whey Protein Scoop / High-Protein Milk", baseG: 32, unitAr: "جم (سكوب)", unitEn: "g (1 scoop)" },
+                            { ar: "تفاحة متوسطة أو ثمرة فاكهة", en: "Medium Fresh Apple", baseG: 130, unitAr: "جم", unitEn: "g" },
+                            { ar: "زبدة لوز أو فول سوداني", en: "Almond / Peanut Butter", baseG: 15, unitAr: "جم", unitEn: "g" }
+                        ]
+                    },
+                    {
+                        arName: "كعك الأرز (Rice Cakes) بجبن كريمي لايت وشرائح الديك الرومي",
+                        enName: "Rice Cakes with Light Cream Cheese & Turkey Slices",
+                        items: [
+                            { ar: "رايس كيك (كعك الأرز المقرمش)", en: "Whole Grain Rice Cakes", baseG: 30, unitAr: "جم (3 قطع)", unitEn: "g (3 cakes)" },
+                            { ar: "جبن كريمي لايت أو لبنة", en: "Light Cream Cheese / Labneh", baseG: 45, unitAr: "جم", unitEn: "g" },
+                            { ar: "شرائح ديك رومي مدخن", en: "Smoked Turkey Breast Slices", baseG: 60, unitAr: "جم", unitEn: "g" }
+                        ]
+                    }
+                ]
+            }
+        };
+
+        // --- WORKOUT PROGRAMS DATABASE (6 COMPLETE PROGRAMS) ---
+        // Adapts dynamically to Beginner, Intermediate, and Advanced!
+        const workoutPrograms = {
+            hiit: {
+                id: 'hiit',
+                category: 'cardio',
+                icon: 'fa-bolt-lightning',
+                color: 'rose',
+                recommendedFor: ['intermediate', 'advanced'],
+                ar: {
+                    name: "كارديو عالي الشدة (HIIT)",
+                    badge: "حرق دهون مضاعف ولياقة قصوى",
+                    desc: "فترات عمل قصيرة بأقصى جهد متبوعة بفترات راحة نشطة. يرفع معدل الحرق لساعات طويلة بعد انتهاء التمرين (EPOC).",
+                    freq: "3 - 4 أيام تمرين + أيام استشفاء"
+                },
+                en: {
+                    name: "High-Intensity Cardio (HIIT)",
+                    badge: "Max Calorie Burn & Conditioning",
+                    desc: "All-out explosive intervals alternated with active recovery periods. Triggers strong afterburn effect (EPOC) for hours post-workout.",
+                    freq: "3 - 4 HIIT Days + Active Recovery"
+                },
+                days: [
+                    {
+                        arDay: "اليوم 1: HIIT كامل الجسم", enDay: "Day 1: Full Body Metabolic HIIT", isRest: false,
+                        exercises: [
+                            { ar: "قفز الحبل السريع أو Jumping Jacks", en: "High-Speed Jump Rope / Jumping Jacks", muscleAr: "جهاز دوري كامل", muscleEn: "Full Body Cardio", baseSets: 4, repsAr: "45 ثانية عمل", repsEn: "45s Work", rest: "20s", tempo: "سريع متفجر / Explosive" },
+                            { ar: "تمرين البيربي (Burpees)", en: "Explosive Burpees", muscleAr: "كامل الجسم والقلب", muscleEn: "Full Body Conditioning", baseSets: 4, repsAr: "35 ثانية عمل", repsEn: "35s Work", rest: "25s", tempo: "مستمر / Continuous" },
+                            { ar: "متسلق الجبال السريع (Mountain Climbers)", en: "Fast Mountain Climbers", muscleAr: "البطن والكور والكتف", muscleEn: "Core & Shoulders", baseSets: 4, repsAr: "40 ثانية عمل", repsEn: "40s Work", rest: "20s", tempo: "سريع / Fast" },
+                            { ar: "سكوات مع قفزة (Jump Squats)", en: "Plyo Jump Squats", muscleAr: "الأرجل والأرداف", muscleEn: "Quads & Glutes", baseSets: 4, repsAr: "35 ثانية عمل", repsEn: "35s Work", rest: "25s", tempo: "انفجاري / Plyo" },
+                            { ar: "رفع الركبتين عالياً في المكان (High Knees)", en: "Sprint High Knees", muscleAr: "اللياقة القلبية والسمانة", muscleEn: "Cardio & Calves", baseSets: 4, repsAr: "45 ثانية عمل", repsEn: "45s Work", rest: "20s", tempo: "أقصى سرعة / Max Speed" }
+                        ]
+                    },
+                    { arDay: "اليوم 2: استشفاء وإطالات", enDay: "Day 2: Mobility & Active Walk", isRest: true, exercises: [] },
+                    {
+                        arDay: "اليوم 3: سبرينت وكور HIIT", enDay: "Day 3: Sprint & Core Intervals", isRest: false,
+                        exercises: [
+                            { ar: "عدو سريع بالتبادل مع مشي (Sprints)", en: "Treadmill / Outdoor Sprint Intervals", muscleAr: "حرق دهون ولياقة", muscleEn: "Anaerobic Conditioning", baseSets: 6, repsAr: "30 ثانية أقصى سرعة", repsEn: "30s All-Out Sprint", rest: "60s", tempo: "90% Max HR" },
+                            { ar: "طعن تبادلي بالقفز (Jumping Lunges)", en: "Alternating Split Jump Lunges", muscleAr: "الأماميات والخلفيات", muscleEn: "Legs & Balance", baseSets: 4, repsAr: "30 ثانية عمل", repsEn: "30s Work", rest: "30s", tempo: "متحكم / Controlled" },
+                            { ar: "بلانك ديناميكي مع لمس الكتف", en: "Plank Shoulder Taps", muscleAr: "الجذع والبطن", muscleEn: "Core Stability", baseSets: 4, repsAr: "40 ثانية عمل", repsEn: "40s Work", rest: "20s", tempo: "ثابت / Steady" },
+                            { ar: "مشية الدب السريعة (Bear Crawls)", en: "Athletic Bear Crawls", muscleAr: "كامل الجسم", muscleEn: "Total Body", baseSets: 4, repsAr: "35 ثانية عمل", repsEn: "35s Work", rest: "25s", tempo: "متصل / Continuous" }
+                        ]
+                    },
+                    { arDay: "اليوم 4: راحة واستشفاء", enDay: "Day 4: Rest & Hydration", isRest: true, exercises: [] },
+                    {
+                        arDay: "اليوم 5: تاباتا عالي الشدة (Tabata)", enDay: "Day 5: Tabata Torch Protocol", isRest: false,
+                        exercises: [
+                            { ar: "سكوات سومو مع نبضات (Sumo Squat Pulses)", en: "Sumo Squat Pulses", muscleAr: "الفخذ الداخلي والأرداف", muscleEn: "Glutes & Adductors", baseSets: 5, repsAr: "40 ثانية عمل", repsEn: "40s Work", rest: "20s", tempo: "نبضي / Pulse" },
+                            { ar: "ضغط رياضي مع تصفيق أو سريع", en: "Speed / Plyo Push-Ups", muscleAr: "الصدر والترايسبس", muscleEn: "Chest & Triceps", baseSets: 4, repsAr: "30 ثانية عمل", repsEn: "30s Work", rest: "30s", tempo: "سريع / Fast" },
+                            { ar: "تزلج جانبي سريع (Skater Jumps)", en: "Lateral Skater Hops", muscleAr: "الرشاقة والأرجل", muscleEn: "Lateral Agility", baseSets: 4, repsAr: "40 ثانية عمل", repsEn: "40s Work", rest: "20s", tempo: "ديناميكي / Dynamic" },
+                            { ar: "دراجة البطن السريعة (Bicycle Crunches)", en: "Speed Bicycle Crunches", muscleAr: "عضلات البطن والخواصر", muscleEn: "Abs & Obliques", baseSets: 4, repsAr: "45 ثانية عمل", repsEn: "45s Work", rest: "15s", tempo: "متصل / Continuous" }
+                        ]
+                    },
+                    {
+                        arDay: "اليوم 6: تحدي التحمل الدوري", enDay: "Day 6: Endurance Circuit Finisher", isRest: false,
+                        exercises: [
+                            { ar: "قفز الصندوق أو الدرج (Box / Step Jumps)", en: "Box Jumps or Fast Step-Ups", muscleAr: "القوة الانفجارية للأرجل", muscleEn: "Lower Body Power", baseSets: 4, repsAr: "15 عدّة", repsEn: "15 Reps", rest: "30s", tempo: "انفجاري / Explosive" },
+                            { ar: "تراسترز بوزن الجسم أو دمبل خفيف", en: "Squat to Overhead Press (Thrusters)", muscleAr: "كامل الجسم", muscleEn: "Full Body", baseSets: 4, repsAr: "40 ثانية", repsEn: "40s Work", rest: "20s", tempo: "سريع / Fast" },
+                            { ar: "بلانك ثابت (Isometric Plank)", en: "Isometric Core Plank", muscleAr: "البطن والظهر السفلي", muscleEn: "Core Endurance", baseSets: 3, repsAr: "60 ثانية ثبات", repsEn: "60s Hold", rest: "30s", tempo: "ثبات تام / Hold" }
+                        ]
+                    },
+                    { arDay: "اليوم 7: راحة تامة", enDay: "Day 7: Complete Rest Day", isRest: true, exercises: [] }
+                ]
+            },
+
+            liss: {
+                id: 'liss',
+                category: 'cardio',
+                icon: 'fa-heart-pulse',
+                color: 'sky',
+                recommendedFor: ['beginner'],
+                ar: {
+                    name: "كارديو منخفض الشدة (LISS)",
+                    badge: "ممتاز للمبتدئين وحرق الدهون الصافي",
+                    desc: "كارديو مستمر بشدة معتدلة ومريحة للمفاصل (Zone 2) يعتمد مباشرة على أكسدة الدهون دون إجهاد الجهاز العصبي.",
+                    freq: "4 - 5 أيام أسبوعياً"
+                },
+                en: {
+                    name: "Low-Intensity Cardio (LISS)",
+                    badge: "Joint-Friendly Fat Oxidation",
+                    desc: "Steady-state Zone 2 aerobic sessions that burn fat efficiently while preserving muscle mass and keeping joint stress minimal.",
+                    freq: "4 - 5 Days / Week"
+                },
+                days: [
+                    {
+                        arDay: "اليوم 1: مشي سريع مائل (Incline Walk)", enDay: "Day 1: Incline Treadmill / Brisk Walk", isRest: false,
+                        exercises: [
+                            { ar: "إحماء مشي خفيف وتدوير المفاصل", en: "Warm-up Walk & Joint Mobility", muscleAr: "تهيئة المفاصل", muscleEn: "Warm-up", baseSets: 1, repsAr: "5 دقائق", repsEn: "5 Mins", rest: "0s", tempo: "خفيف / Easy" },
+                            { ar: "مشي على المشاية بميل (Incline 8-12%، سرعة 4.5-5.5)", en: "Incline Treadmill Walk (Incline 8-12%, Speed 5 km/h)", muscleAr: "حرق دهون والأرداف والسمانة", muscleEn: "Zone 2 Fat Burn", baseSets: 1, repsAr: "35 - 45 دقيقة متصلة", repsEn: "35 - 45 Mins Steady", rest: "0s", tempo: "نبض 125-135 BPM" },
+                            { ar: "إطالات ثابتة لعضلات الأرجل وأسفل الظهر", en: "Lower Body & Back Stretching", muscleAr: "المرونة والاستشفاء", muscleEn: "Flexibility", baseSets: 3, repsAr: "30 ثانية لكل إطالة", repsEn: "30s per stretch", rest: "15s", tempo: "هادئ / Relaxed" }
+                        ]
+                    },
+                    {
+                        arDay: "اليوم 2: الدراجة الثابتة + الكور", enDay: "Day 2: Stationary Bike & Core", isRest: false,
+                        exercises: [
+                            { ar: "دراجة ثابتة أو خارجية بمقاومة متوسطة", en: "Stationary Cycling (Moderate Resistance)", muscleAr: "القلب والفخذ الأمامي", muscleEn: "Cardio & Quads", baseSets: 1, repsAr: "40 دقيقة", repsEn: "40 Mins", rest: "0s", tempo: "80 RPM" },
+                            { ar: "تمرين الطائر والكلب (Bird-Dog)", en: "Core Bird-Dog", muscleAr: "ثبات العمود الفقري", muscleEn: "Core & Lower Back", baseSets: 3, repsAr: "12 عدّة لكل جانب", repsEn: "12 Reps/side", rest: "30s", tempo: "2-1-2" },
+                            { ar: "كوبري الأرداف (Glute Bridges)", en: "Bodyweight Glute Bridges", muscleAr: "الأرداف والخلفيات", muscleEn: "Glutes & Hamstrings", baseSets: 3, repsAr: "15 عدّة", repsEn: "15 Reps", rest: "30s", tempo: "2-2-1" }
+                        ]
+                    },
+                    { arDay: "اليوم 3: راحة واستشفاء", enDay: "Day 3: Rest Day", isRest: true, exercises: [] },
+                    {
+                        arDay: "اليوم 4: جهاز الإليبتيكال / الأوربتراك", enDay: "Day 4: Elliptical Cross-Trainer", isRest: false,
+                        exercises: [
+                            { ar: "تمرين متصل على جهاز الإليبتيكال أو المشي المفتوح", en: "Elliptical Cross-Trainer or Outdoor Power Walk", muscleAr: "كامل الجسم بدون صدمات", muscleEn: "Zero-Impact Full Body", baseSets: 1, repsAr: "40 - 50 دقيقة", repsEn: "40 - 50 Mins", rest: "0s", tempo: "Zone 2" },
+                            { ar: "بلانك أمامي وجانبي", en: "Front & Side Planks", muscleAr: "عضلات الجذع", muscleEn: "Core & Obliques", baseSets: 3, repsAr: "40 ثانية", repsEn: "40s Hold", rest: "30s", tempo: "ثبات / Isometric" }
+                        ]
+                    },
+                    {
+                        arDay: "اليوم 5: تحدي 10,000 خطوة", enDay: "Day 5: 10,000 Steps Outdoor Session", isRest: false,
+                        exercises: [
+                            { ar: "مشي مفتوح بخطوة نشطة في الهواء الطلق", en: "Outdoor Brisk Walking Session", muscleAr: "اللياقة الهوائية والصحة العامة", muscleEn: "Cardiovascular Health", baseSets: 1, repsAr: "50 - 60 دقيقة", repsEn: "50 - 60 Mins", rest: "0s", tempo: "خطوة سريعة / Brisk" },
+                            { ar: "تمارين مرونة الحوض والكتفين", en: "Hip & Shoulder Mobility Flow", muscleAr: "المفاصل والمرونة", muscleEn: "Mobility", baseSets: 3, repsAr: "10 عدات هادئة", repsEn: "10 Slow Reps", rest: "20s", tempo: "بطيء / Slow" }
+                        ]
+                    },
+                    { arDay: "اليوم 6: سباحة أو مشي خفيف", enDay: "Day 6: Optional Swim or Light Walk", isRest: false,
+                        exercises: [
+                            { ar: "سباحة حرة هادئة أو مشي استشفائي", en: "Recreational Swimming or Casual Walk", muscleAr: "استشفاء نشط لكامل الجسم", muscleEn: "Active Recovery", baseSets: 1, repsAr: "30 - 40 دقيقة", repsEn: "30 - 40 Mins", rest: "0s", tempo: "مريح / Easy" }
+                        ]
+                    },
+                    { arDay: "اليوم 7: راحة تامة", enDay: "Day 7: Full Rest Day", isRest: true, exercises: [] }
+                ]
+            },
+
+            home: {
+                id: 'home',
+                category: 'home',
+                icon: 'fa-house-laptop',
+                color: 'emerald',
+                recommendedFor: ['beginner', 'intermediate'],
+                ar: {
+                    name: "تمارين مقاومة في المنزل (Home Workout)",
+                    badge: "بوزن الجسم ودمبل أو حبل مقاومة",
+                    desc: "برنامج متكامل لبناء العضلات وشد الجسم بالكامل في المنزل باستخدام وزن الجسم مع إمكانية استخدام زوج دمبل أو أستك مقاومة.",
+                    freq: "4 أيام تمرين في الأسبوع"
+                },
+                en: {
+                    name: "Home Resistance Training",
+                    badge: "Bodyweight & Minimal Equipment",
+                    desc: "Complete muscular hypertrophy and toning program performed at home using bodyweight, dumbbells, or resistance bands.",
+                    freq: "4 Days / Week (Upper / Lower / Full Body)"
+                },
+                days: [
+                    {
+                        arDay: "اليوم 1: علوي دفع (صدر وأكتاف وتراي)", enDay: "Day 1: Home Push (Chest, Shoulders, Triceps)", isRest: false,
+                        exercises: [
+                            { ar: "تمرين الضغط الكلاسيكي (Push-Ups)", en: "Standard / Deficit Push-Ups", muscleAr: "الصدر الأوسط", muscleEn: "Mid Chest", baseSets: 4, repsAr: "12 - 15 عدّة", repsEn: "12 - 15 Reps", rest: "60s", tempo: "3-1-1" },
+                            { ar: "ضغط مائل بوضع القدمين على كرسي (Decline Push-Ups)", en: "Feet-Elevated Decline Push-Ups", muscleAr: "الصدر العلوي والكتف", muscleEn: "Upper Chest", baseSets: 3, repsAr: "10 - 12 عدّة", repsEn: "10 - 12 Reps", rest: "60s", tempo: "2-1-1" },
+                            { ar: "ضغط أكتاف بايك أو بالدمبل (Pike Push-Ups / DB Press)", en: "Pike Push-Ups or Dumbbell Shoulder Press", muscleAr: "الأكتاف", muscleEn: "Shoulders", baseSets: 4, repsAr: "10 - 12 عدّة", repsEn: "10 - 12 Reps", rest: "60s", tempo: "2-1-1" },
+                            { ar: "رفرفة جانبي بدمبل أو حبل مقاومة", en: "Lateral Raises (DB or Band)", muscleAr: "الكتف الجانبي", muscleEn: "Side Delts", baseSets: 3, repsAr: "15 عدّة", repsEn: "15 Reps", rest: "45s", tempo: "2-1-2" },
+                            { ar: "متوازي على حافة الكرسي (Bench Tricep Dips)", en: "Chair / Bench Tricep Dips", muscleAr: "الترايسبس", muscleEn: "Triceps", baseSets: 3, repsAr: "12 - 15 عدّة", repsEn: "12 - 15 Reps", rest: "60s", tempo: "2-1-1" }
+                        ]
+                    },
+                    {
+                        arDay: "اليوم 2: أرجل وبطن في المنزل", enDay: "Day 2: Home Lower Body & Core", isRest: false,
+                        exercises: [
+                            { ar: "سكوات بلغاري برجل واحدة على كرسي (Bulgarian Split Squat)", en: "Bulgarian Split Squats", muscleAr: "الأماميات والأرداف", muscleEn: "Quads & Glutes", baseSets: 4, repsAr: "10 - 12 لكل رجل", repsEn: "10 - 12 / leg", rest: "75s", tempo: "3-1-1" },
+                            { ar: "سكوات عميق بوزن الجسم أو دمبل (Goblet Squat)", en: "Goblet / Tempo Squats", muscleAr: "الفخذ الكامل", muscleEn: "Quads", baseSets: 4, repsAr: "15 عدّة", repsEn: "15 Reps", rest: "60s", tempo: "3-1-1" },
+                            { ar: "رفع الحوض برجل واحدة (Single-Leg Glute Bridge)", en: "Single-Leg Glute Bridges", muscleAr: "الخلفيات والأرداف", muscleEn: "Hamstrings & Glutes", baseSets: 3, repsAr: "12 لكل رجل", repsEn: "12 / leg", rest: "60s", tempo: "2-2-1" },
+                            { ar: "رفع السمانة على درجة سلم (Standing Calf Raises)", en: "Single-Leg Step Calf Raises", muscleAr: "السمانة", muscleEn: "Calves", baseSets: 4, repsAr: "20 عدّة", repsEn: "20 Reps", rest: "45s", tempo: "2-2-1" },
+                            { ar: "رفع الأرجل للبطن السفلية (Lying Leg Raises)", en: "Lying Leg Raises", muscleAr: "البطن السفلي", muscleEn: "Lower Abs", baseSets: 3, repsAr: "15 عدّة", repsEn: "15 Reps", rest: "45s", tempo: "2-1-2" }
+                        ]
+                    },
+                    { arDay: "اليوم 3: راحة واستشفاء", enDay: "Day 3: Active Recovery", isRest: true, exercises: [] },
+                    {
+                        arDay: "اليوم 4: علوي سحب (ظهر وبايسبس)", enDay: "Day 4: Home Pull (Back, Rear Delts, Biceps)", isRest: false,
+                        exercises: [
+                            { ar: "عقلة منزلية أو سحب بحبل المقاومة (Pull-Ups / Band Pulldown)", en: "Doorway Pull-Ups or Resistance Band Pulldowns", muscleAr: "المجنص وعرض الظهر", muscleEn: "Lats", baseSets: 4, repsAr: "8 - 12 عدّة", repsEn: "8 - 12 Reps", rest: "75s", tempo: "2-1-2" },
+                            { ar: "تجديف منحنٍ بدمبل أو حقيبة مثقلة (Bent-Over Rows)", en: "Dumbbell / Backpack Bent-Over Rows", muscleAr: "كثافة الظهر", muscleEn: "Mid Back", baseSets: 4, repsAr: "12 - 15 عدّة", repsEn: "12 - 15 Reps", rest: "60s", tempo: "2-1-2" },
+                            { ar: "تمرين سوبرمان مع سحب المرفقين (Superman Lat Pulls)", en: "Prone Superman Lat Pulls", muscleAr: "أسفل وأعلى الظهر", muscleEn: "Erectors & Upper Back", baseSets: 3, repsAr: "15 عدّة", repsEn: "15 Reps", rest: "45s", tempo: "2-2-1" },
+                            { ar: "تبادل بايسبس بالدمبل أو أستك المقاومة", en: "Bicep Curls (DB or Band)", muscleAr: "البايسبس", muscleEn: "Biceps", baseSets: 3, repsAr: "12 - 15 عدّة", repsEn: "12 - 15 Reps", rest: "60s", tempo: "2-1-2" },
+                            { ar: "هامر كيرل (Hammer Curls)", en: "Neutral-Grip Hammer Curls", muscleAr: "البايسبس والساعد", muscleEn: "Brachialis & Forearms", baseSets: 3, repsAr: "12 عدّة", repsEn: "12 Reps", rest: "60s", tempo: "2-1-2" }
+                        ]
+                    },
+                    {
+                        arDay: "اليوم 5: شامل كامل الجسم (Full Body)", enDay: "Day 5: Full Body Hypertrophy & Core", isRest: false,
+                        exercises: [
+                            { ar: "ضغط ضيق للصدر والتراي (Diamond Push-Ups)", en: "Diamond / Close-Grip Push-Ups", muscleAr: "الصدر الداخلي والتراي", muscleEn: "Inner Chest & Triceps", baseSets: 3, repsAr: "12 عدّة", repsEn: "12 Reps", rest: "60s", tempo: "2-1-1" },
+                            { ar: "طعن المشي أو الثابت (Walking Lunges)", en: "Walking or Reverse Lunges", muscleAr: "الأرجل والأرداف", muscleEn: "Legs & Glutes", baseSets: 3, repsAr: "12 لكل رجل", repsEn: "12 / leg", rest: "60s", tempo: "2-1-1" },
+                            { ar: "تجديف فردي بالدمبل (Single-Arm Row)", en: "Single-Arm Dumbbell/Band Row", muscleAr: "المجنص", muscleEn: "Lats", baseSets: 3, repsAr: "12 لكل ذراع", repsEn: "12 / arm", rest: "60s", tempo: "2-1-2" },
+                            { ar: "بلانك مع طحن البطن (Plank + Crunches)", en: "Abdominal Crunch & Plank Superset", muscleAr: "عضلات البطن", muscleEn: "Core / Abs", baseSets: 3, repsAr: "20 عدّة + 45 ثانية", repsEn: "20 Reps + 45s", rest: "45s", tempo: "متحكم / Controlled" }
+                        ]
+                    },
+                    { arDay: "اليوم 6: مشي نشط أو راحة", enDay: "Day 6: Light Walk or Rest", isRest: true, exercises: [] },
+                    { arDay: "اليوم 7: راحة تامة", enDay: "Day 7: Complete Rest Day", isRest: true, exercises: [] }
+                ]
+            },
+
+            pro_split: {
+                id: 'pro_split',
+                category: 'gym',
+                icon: 'fa-dumbbell',
+                color: 'amber',
+                recommendedFor: ['beginner', 'intermediate'],
+                ar: {
+                    name: "برو سبليت - الجيم (Pro Split)",
+                    badge: "تركيز كامل على عضلة واحدة يومياً",
+                    desc: "النظام الكلاسيكي الشهير في الجيم: تخصيص يوم مستقل لكل مجموعة عضلية (صدر، ظهر، أكتاف، ذراع، أرجل) لضخ دم أقصى وتركيز عالٍ.",
+                    freq: "5 أيام تمرين + يومين راحة"
+                },
+                en: {
+                    name: "Gym Pro Split (Bro Split)",
+                    badge: "Maximum Focus per Muscle Group",
+                    desc: "Classic bodybuilding split dedicating an entire session to each major muscle group (Chest, Back, Shoulders, Arms, Legs) for deep muscular fatigue.",
+                    freq: "5 Days / Week"
+                },
+                days: [
+                    {
+                        arDay: "اليوم 1: يوم الصدر (Chest Day)", enDay: "Day 1: International Chest Day", isRest: false,
+                        exercises: [
+                            { ar: "ضغط بنش مستوي بالبار أو الدمبل (Flat Bench Press)", en: "Flat Barbell / Dumbbell Bench Press", muscleAr: "الصدر الأوسط", muscleEn: "Mid Pectorals", baseSets: 4, repsAr: "8 - 10 عدات", repsEn: "8 - 10 Reps", rest: "90s", tempo: "3-1-1" },
+                            { ar: "ضغط بنش عالي بالدمبل (Incline Dumbbell Press)", en: "Incline Dumbbell Press", muscleAr: "الصدر العلوي", muscleEn: "Upper Chest", baseSets: 4, repsAr: "10 - 12 عدّة", repsEn: "10 - 12 Reps", rest: "90s", tempo: "3-1-1" },
+                            { ar: "جهاز الشيست بريس أو المتوازي (Chest Dips / Machine Press)", en: "Weighted Chest Dips / Machine Press", muscleAr: "الصدر السفلي", muscleEn: "Lower Chest", baseSets: 3, repsAr: "10 - 12 عدّة", repsEn: "10 - 12 Reps", rest: "75s", tempo: "2-1-1" },
+                            { ar: "تفتيح بالكابل أو الفراشة (Cable Crossover / Pec Deck)", en: "Cable Flyes / Pec Deck Machine", muscleAr: "تفصيل الصدر", muscleEn: "Chest Isolation", baseSets: 3, repsAr: "12 - 15 عدّة", repsEn: "12 - 15 Reps", rest: "60s", tempo: "2-2-1" }
+                        ]
+                    },
+                    {
+                        arDay: "اليوم 2: يوم الظهر (Back Day)", enDay: "Day 2: Back Width & Thickness", isRest: false,
+                        exercises: [
+                            { ar: "سحب عالي أمامي واسع (Lat Pulldown)", en: "Wide-Grip Lat Pulldown", muscleAr: "عرض الظهر (المجنص)", muscleEn: "Lat Width", baseSets: 4, repsAr: "10 - 12 عدّة", repsEn: "10 - 12 Reps", rest: "90s", tempo: "2-1-2" },
+                            { ar: "تجديف بالبار منحنٍ (Barbell Bent-Over Row)", en: "Barbell Bent-Over Row", muscleAr: "سمك وكثافة الظهر", muscleEn: "Back Thickness", baseSets: 4, repsAr: "8 - 10 عدات", repsEn: "8 - 10 Reps", rest: "90s", tempo: "2-1-1" },
+                            { ar: "سحب أرضي ضيق بالكابل (Seated Cable Row)", en: "Seated Close-Grip Cable Row", muscleAr: "وسط الظهر", muscleEn: "Mid Back", baseSets: 3, repsAr: "10 - 12 عدّة", repsEn: "10 - 12 Reps", rest: "75s", tempo: "2-1-2" },
+                            { ar: "مسطرة ذراع مفرود بالكابل (Straight-Arm Pulldown)", en: "Straight-Arm Rope Pulldown", muscleAr: "عزل المجنص", muscleEn: "Lower Lats", baseSets: 3, repsAr: "12 - 15 عدّة", repsEn: "12 - 15 Reps", rest: "60s", tempo: "2-1-2" },
+                            { ar: "قطنية على الجهاز (Back Extensions)", en: "Hyperextensions", muscleAr: "أسفل الظهر", muscleEn: "Lower Back", baseSets: 3, repsAr: "12 - 15 عدّة", repsEn: "12 - 15 Reps", rest: "60s", tempo: "2-1-1" }
+                        ]
+                    },
+                    { arDay: "اليوم 3: راحة واستشفاء", enDay: "Day 3: Mid-Week Rest", isRest: true, exercises: [] },
+                    {
+                        arDay: "اليوم 4: يوم الأكتاف والترابيس (Shoulders)", enDay: "Day 4: 3D Shoulders & Traps", isRest: false,
+                        exercises: [
+                            { ar: "ضغط أكتاف بالدمبل جالساً (Seated DB Overhead Press)", en: "Seated Dumbbell Shoulder Press", muscleAr: "الكتف الأمامي والجانبي", muscleEn: "Anterior/Medial Delts", baseSets: 4, repsAr: "8 - 10 عدات", repsEn: "8 - 10 Reps", rest: "90s", tempo: "2-1-1" },
+                            { ar: "رفرفة جانبي بالدمبل أو الكابل (Lateral Raises)", en: "Dumbbell / Cable Lateral Raises", muscleAr: "الكتف الجانبي (التدوير)", muscleEn: "Lateral Delts", baseSets: 4, repsAr: "12 - 15 عدّة", repsEn: "12 - 15 Reps", rest: "60s", tempo: "2-1-2" },
+                            { ar: "رفرفة خلفي على جهاز الفراشة أو الحبل (Face Pulls / Rear Delt)", en: "Reverse Pec Deck / Rope Face Pulls", muscleAr: "الكتف الخلفي", muscleEn: "Rear Delts", baseSets: 4, repsAr: "12 - 15 عدّة", repsEn: "12 - 15 Reps", rest: "60s", tempo: "2-2-1" },
+                            { ar: "شراغز بالدمبل للترابيس (Dumbbell Shrugs)", en: "Heavy Dumbbell Shrugs", muscleAr: "عضلات الترابيس", muscleEn: "Upper Traps", baseSets: 3, repsAr: "12 - 15 عدّة", repsEn: "12 - 15 Reps", rest: "60s", tempo: "1-2-1" }
+                        ]
+                    },
+                    {
+                        arDay: "اليوم 5: يوم الأرجل الكامل (Leg Day)", enDay: "Day 5: Complete Leg Day", isRest: false,
+                        exercises: [
+                            { ar: "سكوات بالبار أو هاك سكوات (Barbell / Hack Squat)", en: "Barbell Back Squat / Hack Squat", muscleAr: "الأرجل الأمامية والأرداف", muscleEn: "Quads & Glutes", baseSets: 4, repsAr: "8 - 10 عدات", repsEn: "8 - 10 Reps", rest: "120s", tempo: "3-1-1" },
+                            { ar: "مكبس الأرجل (Leg Press)", en: "45° Leg Press", muscleAr: "ضخامة الفخذ", muscleEn: "Quad Hypertrophy", baseSets: 4, repsAr: "10 - 12 عدّة", repsEn: "10 - 12 Reps", rest: "90s", tempo: "3-0-1" },
+                            { ar: "ديدليفت روماني بالبار أو الدمبل (Romanian Deadlift)", en: "Romanian Deadlift (RDL)", muscleAr: "الخلفيات والأرداف", muscleEn: "Hamstrings & Glutes", baseSets: 4, repsAr: "10 - 12 عدّة", repsEn: "10 - 12 Reps", rest: "90s", tempo: "3-1-1" },
+                            { ar: "جهاز الأماميات والخلفيات (Leg Extension & Leg Curl)", en: "Leg Extensions + Seated Leg Curls", muscleAr: "تفصيل الفخذ", muscleEn: "Quad & Hamstring Isolation", baseSets: 3, repsAr: "12 - 15 عدّة", repsEn: "12 - 15 Reps", rest: "60s", tempo: "2-1-2" },
+                            { ar: "سمانة واقف وجالس (Calf Raises)", en: "Standing Calf Raises", muscleAr: "السمانة", muscleEn: "Calves", baseSets: 4, repsAr: "15 - 20 عدّة", repsEn: "15 - 20 Reps", rest: "45s", tempo: "2-2-1" }
+                        ]
+                    },
+                    {
+                        arDay: "اليوم 6: يوم الذراع والبطن (Arms & Abs)", enDay: "Day 6: Arms Blast (Biceps, Triceps, Abs)", isRest: false,
+                        exercises: [
+                            { ar: "بار زجزاج للبايسبس واقف (EZ-Bar Curl)", en: "Standing EZ-Bar Bicep Curl", muscleAr: "البايسبس", muscleEn: "Biceps Mass", baseSets: 4, repsAr: "10 - 12 عدّة", repsEn: "10 - 12 Reps", rest: "60s", tempo: "2-1-2" },
+                            { ar: "ترايسبس بالحبل أو كسارة الجماجم (Skullcrushers / Rope Pushdown)", en: "EZ-Bar Skullcrushers / Rope Pushdowns", muscleAr: "الترايسبس", muscleEn: "Triceps", baseSets: 4, repsAr: "10 - 12 عدّة", repsEn: "10 - 12 Reps", rest: "60s", tempo: "2-1-2" },
+                            { ar: "تبادل دمبل على بنش مائل (Incline DB Curl)", en: "Incline Dumbbell Curl", muscleAr: "الرأس الطويل للبايسبس", muscleEn: "Long Head Biceps", baseSets: 3, repsAr: "12 عدّة", repsEn: "12 Reps", rest: "60s", tempo: "2-1-2" },
+                            { ar: "ترايسبس خلف الرأس بالكابل (Overhead Cable Extension)", en: "Overhead Cable Tricep Extension", muscleAr: "الرأس الطويل للترايسبس", muscleEn: "Long Head Triceps", baseSets: 3, repsAr: "12 - 15 عدّة", repsEn: "12 - 15 Reps", rest: "60s", tempo: "2-1-2" },
+                            { ar: "طحن البطن بالكابل (Cable Crunch)", en: "Kneeling Cable Crunches", muscleAr: "عضلات البطن", muscleEn: "Abs", baseSets: 4, repsAr: "15 عدّة", repsEn: "15 Reps", rest: "45s", tempo: "2-1-2" }
+                        ]
+                    },
+                    { arDay: "اليوم 7: راحة تامة", enDay: "Day 7: Full Rest Day", isRest: true, exercises: [] }
+                ]
+            },
+
+            ppl: {
+                id: 'ppl',
+                category: 'gym',
+                icon: 'fa-layer-group',
+                color: 'purple',
+                recommendedFor: ['intermediate', 'advanced'],
+                ar: {
+                    name: "بوش بول ليج (Push Pull Legs - PPL)",
+                    badge: "الأشهر عالمياً لتمرين العضلة مرتين أسبوعياً",
+                    desc: "يقسم الجسم حسب الحركة الميكانيكية: يوم دفع (صدر، كتف، تراي)، يوم سحب (ظهر، باي)، ويوم أرجل. يحقق أفضل توازن بين الحجم التدريبي والاستشفاء.",
+                    freq: "6 أيام تمرين (أو 3-5 أيام بالتناوب)"
+                },
+                en: {
+                    name: "Push Pull Legs (PPL Split)",
+                    badge: "Gold Standard 2x/Week Frequency",
+                    desc: "Groups muscles by biomechanics: Push (Chest, Shoulders, Triceps), Pull (Back, Rear Delts, Biceps), and Legs. Maximizes protein synthesis frequency.",
+                    freq: "6 Days / Week (Push-Pull-Legs x2)"
+                },
+                days: [
+                    {
+                        arDay: "اليوم 1: دفع أ (Push A - تركيز قوة وصدر)", enDay: "Day 1: Push A (Chest & Shoulder Focus)", isRest: false,
+                        exercises: [
+                            { ar: "بنش بريس مستوي بالبار (Flat Barbell Bench Press)", en: "Flat Barbell Bench Press", muscleAr: "الصدر الأوسط", muscleEn: "Chest", baseSets: 4, repsAr: "6 - 8 عدات", repsEn: "6 - 8 Reps", rest: "120s", tempo: "3-1-1" },
+                            { ar: "ضغط عالي بالدمبل (Incline Dumbbell Press)", en: "Incline Dumbbell Press", muscleAr: "الصدر العلوي", muscleEn: "Upper Chest", baseSets: 3, repsAr: "8 - 10 عدات", repsEn: "8 - 10 Reps", rest: "90s", tempo: "3-1-1" },
+                            { ar: "ضغط أكتاف بالبار أو الدمبل (Overhead Press)", en: "Seated / Standing Overhead Press", muscleAr: "الأكتاف", muscleEn: "Shoulders", baseSets: 3, repsAr: "8 - 10 عدات", repsEn: "8 - 10 Reps", rest: "90s", tempo: "2-1-1" },
+                            { ar: "رفرفة جانبي بالكابل (Cable Lateral Raises)", en: "Cable Lateral Raises", muscleAr: "الكتف الجانبي", muscleEn: "Side Delts", baseSets: 4, repsAr: "12 - 15 عدّة", repsEn: "12 - 15 Reps", rest: "60s", tempo: "2-1-2" },
+                            { ar: "دفع ترايسبس بالحبل (Tricep Rope Pushdowns)", en: "Tricep Rope Pushdowns", muscleAr: "الترايسبس", muscleEn: "Triceps", baseSets: 3, repsAr: "12 - 15 عدّة", repsEn: "12 - 15 Reps", rest: "60s", tempo: "2-1-2" }
+                        ]
+                    },
+                    {
+                        arDay: "اليوم 2: سحب أ (Pull A - عرض وكثافة الظهر)", enDay: "Day 2: Pull A (Back & Biceps Focus)", isRest: false,
+                        exercises: [
+                            { ar: "عقلة أو سحب عالي واسع (Pull-Ups / Lat Pulldown)", en: "Weighted Pull-Ups / Lat Pulldown", muscleAr: "المجنص", muscleEn: "Lats", baseSets: 4, repsAr: "8 - 10 عدات", repsEn: "8 - 10 Reps", rest: "90s", tempo: "2-1-2" },
+                            { ar: "تجديف بالبار أو تي بار (T-Bar / Barbell Row)", en: "Chest-Supported T-Bar Row", muscleAr: "وسط الظهر", muscleEn: "Mid Back", baseSets: 4, repsAr: "8 - 10 عدات", repsEn: "8 - 10 Reps", rest: "90s", tempo: "2-1-1" },
+                            { ar: "فيس بول بالحبل للكتف الخلفي (Rope Face Pulls)", en: "Rope Face Pulls", muscleAr: "الكتف الخلفي والترابيس", muscleEn: "Rear Delts", baseSets: 3, repsAr: "15 عدّة", repsEn: "15 Reps", rest: "60s", tempo: "2-2-1" },
+                            { ar: "تبادل بايسبس بالبار أو الدمبل (Barbell / DB Curl)", en: "EZ-Bar or Dumbbell Bicep Curls", muscleAr: "البايسبس", muscleEn: "Biceps", baseSets: 3, repsAr: "10 - 12 عدّة", repsEn: "10 - 12 Reps", rest: "60s", tempo: "2-1-2" },
+                            { ar: "هامر كيرل بالحبل أو الدمبل (Hammer Curls)", en: "Dumbbell Hammer Curls", muscleAr: "الساعد والبايسبس", muscleEn: "Brachialis", baseSets: 3, repsAr: "12 عدّة", repsEn: "12 Reps", rest: "60s", tempo: "2-1-2" }
+                        ]
+                    },
+                    {
+                        arDay: "اليوم 3: أرجل أ (Legs A - تركيز أماميات)", enDay: "Day 3: Legs A (Quad Focused)", isRest: false,
+                        exercises: [
+                            { ar: "سكوات بالبار (Barbell Back Squat)", en: "Barbell Back Squat", muscleAr: "الأرجل الكاملة", muscleEn: "Quads & Glutes", baseSets: 4, repsAr: "6 - 8 عدات", repsEn: "6 - 8 Reps", rest: "120s", tempo: "3-1-1" },
+                            { ar: "ديدليفت روماني بالدمبل (Romanian Deadlift)", en: "Romanian Deadlift", muscleAr: "الخلفيات والأرداف", muscleEn: "Hamstrings", baseSets: 3, repsAr: "10 عدات", repsEn: "10 Reps", rest: "90s", tempo: "3-1-1" },
+                            { ar: "جهاز رفرفة أمامي (Leg Extensions)", en: "Seated Leg Extensions", muscleAr: "الفخذ الأمامي", muscleEn: "Quads", baseSets: 3, repsAr: "12 - 15 عدّة", repsEn: "12 - 15 Reps", rest: "60s", tempo: "2-1-2" },
+                            { ar: "جهاز خلفيات نائم أو جالس (Leg Curls)", en: "Seated / Lying Leg Curls", muscleAr: "الفخذ الخلفي", muscleEn: "Hamstrings", baseSets: 3, repsAr: "12 - 15 عدّة", repsEn: "12 - 15 Reps", rest: "60s", tempo: "2-1-2" },
+                            { ar: "سمانة واقف على الجهاز (Standing Calf Raise)", en: "Standing Calf Raises", muscleAr: "السمانة", muscleEn: "Calves", baseSets: 4, repsAr: "15 عدّة", repsEn: "15 Reps", rest: "45s", tempo: "2-2-1" }
+                        ]
+                    },
+                    {
+                        arDay: "اليوم 4: دفع ب (Push B - ضخامة وتفصيل)", enDay: "Day 4: Push B (Hypertrophy Focus)", isRest: false,
+                        exercises: [
+                            { ar: "بنش عالي بالبار أو السميث (Incline Smith/Barbell Press)", en: "Incline Smith / Barbell Press", muscleAr: "الصدر العلوي", muscleEn: "Upper Chest", baseSets: 4, repsAr: "8 - 12 عدّة", repsEn: "8 - 12 Reps", rest: "90s", tempo: "3-1-1" },
+                            { ar: "تفتيح بالكابل من أعلى لأسفل (Cable Flyes)", en: "High-to-Low Cable Crossover", muscleAr: "الصدر السفلي والداخلي", muscleEn: "Chest Isolation", baseSets: 3, repsAr: "12 - 15 عدّة", repsEn: "12 - 15 Reps", rest: "60s", tempo: "2-2-1" },
+                            { ar: "ضغط أكتاف على الجهاز (Machine Shoulder Press)", en: "Machine Shoulder Press", muscleAr: "الأكتاف", muscleEn: "Deltoids", baseSets: 3, repsAr: "10 - 12 عدّة", repsEn: "10 - 12 Reps", rest: "75s", tempo: "2-1-1" },
+                            { ar: "رفرفة جانبي بالدمبل (Dumbbell Lateral Raises)", en: "Dumbbell Lateral Raises", muscleAr: "الكتف الجانبي", muscleEn: "Side Delts", baseSets: 4, repsAr: "15 عدّة", repsEn: "15 Reps", rest: "60s", tempo: "2-1-2" },
+                            { ar: "ترايسبس خلف الرأس بالكابل (Overhead Tricep Extension)", en: "Overhead Cable Tricep Extension", muscleAr: "الترايسبس", muscleEn: "Long Head Triceps", baseSets: 3, repsAr: "12 - 15 عدّة", repsEn: "12 - 15 Reps", rest: "60s", tempo: "2-1-2" }
+                        ]
+                    },
+                    {
+                        arDay: "اليوم 5: سحب ب (Pull B - تفاصيل الظهر والباي)", enDay: "Day 5: Pull B (Back Detail & Biceps)", isRest: false,
+                        exercises: [
+                            { ar: "سحب عالي بقبضة ضيقة معكوسة أو V-Bar", en: "Close-Grip V-Bar Pulldown", muscleAr: "المجنص السفلي", muscleEn: "Lower Lats", baseSets: 4, repsAr: "10 - 12 عدّة", repsEn: "10 - 12 Reps", rest: "90s", tempo: "2-1-2" },
+                            { ar: "تجديف فردي بالدمبل (Single-Arm Dumbbell Row)", en: "Single-Arm Dumbbell Row", muscleAr: "المجنص", muscleEn: "Lats & Mid Back", baseSets: 3, repsAr: "10 - 12 لكل ذراع", repsEn: "10 - 12 / arm", rest: "75s", tempo: "2-1-1" },
+                            { ar: "فراشة خلفي (Reverse Pec Deck)", en: "Reverse Pec Deck Flyes", muscleAr: "الكتف الخلفي", muscleEn: "Rear Delts", baseSets: 4, repsAr: "15 عدّة", repsEn: "15 Reps", rest: "60s", tempo: "2-2-1" },
+                            { ar: "بايسبس على كرسي الواعظ (Preacher Curl)", en: "Machine / EZ-Bar Preacher Curls", muscleAr: "تكوير البايسبس", muscleEn: "Biceps Short Head", baseSets: 3, repsAr: "10 - 12 عدّة", repsEn: "10 - 12 Reps", rest: "60s", tempo: "2-1-2" },
+                            { ar: "تبادل دمبل على بنش مائل (Incline DB Curl)", en: "Incline Dumbbell Curls", muscleAr: "البايسبس", muscleEn: "Biceps Long Head", baseSets: 3, repsAr: "12 عدّة", repsEn: "12 Reps", rest: "60s", tempo: "2-1-2" }
+                        ]
+                    },
+                    {
+                        arDay: "اليوم 6: أرجل ب (Legs B - خلفيات وأرداف وبطن)", enDay: "Day 6: Legs B & Core (Posterior Chain)", isRest: false,
+                        exercises: [
+                            { ar: "مكبس الأرجل (Leg Press)", en: "Leg Press Machine", muscleAr: "الأرجل بالكامل", muscleEn: "Quads & Glutes", baseSets: 4, repsAr: "10 - 12 عدّة", repsEn: "10 - 12 Reps", rest: "90s", tempo: "3-1-1" },
+                            { ar: "رفع الحوض بالبار (Barbell Hip Thrust) أو طعن", en: "Barbell Hip Thrust / Walking Lunges", muscleAr: "الأرداف والخلفيات", muscleEn: "Glutes & Hamstrings", baseSets: 4, repsAr: "10 - 12 عدّة", repsEn: "10 - 12 Reps", rest: "90s", tempo: "2-2-1" },
+                            { ar: "خلفيات أرجل جالس (Seated Leg Curl)", en: "Seated Leg Curl", muscleAr: "الخلفيات", muscleEn: "Hamstrings", baseSets: 4, repsAr: "12 - 15 عدّة", repsEn: "12 - 15 Reps", rest: "60s", tempo: "2-1-2" },
+                            { ar: "سمانة جالس + رفع أرجل للبطن", en: "Seated Calf Raises + Hanging Leg Raises", muscleAr: "السمانة والبطن", muscleEn: "Calves & Lower Abs", baseSets: 4, repsAr: "15 عدّة", repsEn: "15 Reps", rest: "60s", tempo: "2-1-2" }
+                        ]
+                    },
+                    { arDay: "اليوم 7: راحة واستشفاء كامل", enDay: "Day 7: Complete Recovery Day", isRest: true, exercises: [] }
+                ]
+            },
+
+            arnold: {
+                id: 'arnold',
+                category: 'gym',
+                icon: 'fa-trophy',
+                color: 'teal',
+                recommendedFor: ['advanced'],
+                ar: {
+                    name: "أرنولد سبليت (Arnold Split)",
+                    badge: "النظام الأسطوري للضخامة وتفوق الذراع والأكتاف",
+                    desc: "يجمع بين العضلات المتقابلة (الصدر والظهر معاً) لعمل ضخ دم هائل، ويخصص يوماً كاملاً للأكتاف والذراعين معاً، ويوماً للأرجل.",
+                    freq: "6 أيام تمرين (صدر وظهر / أكتاف وذراع / أرجل)"
+                },
+                en: {
+                    name: "Arnold Split (Antagonist Routine)",
+                    badge: "Legendary Antagonist Pump & Arm Specialization",
+                    desc: "Pairs antagonist muscles (Chest & Back) for an unmatched upper-body pump, dedicates a full day to Shoulders & Arms, followed by Legs.",
+                    freq: "6 Days / Week (Chest+Back / Shoulders+Arms / Legs)"
+                },
+                days: [
+                    {
+                        arDay: "اليوم 1: صدر وظهر أ (Chest & Back A)", enDay: "Day 1: Chest & Back A (Heavy Compound)", isRest: false,
+                        exercises: [
+                            { ar: "بنش بريس مستوي بالبار (Flat Bench Press)", en: "Flat Barbell Bench Press", muscleAr: "الصدر", muscleEn: "Chest", baseSets: 4, repsAr: "8 - 10 عدات", repsEn: "8 - 10 Reps", rest: "90s", tempo: "3-1-1" },
+                            { ar: "عقلة واسعة أو سحب عالي (Wide Pull-Ups / Pulldown)", en: "Wide-Grip Pull-Ups / Lat Pulldown", muscleAr: "عرض الظهر", muscleEn: "Lat Width", baseSets: 4, repsAr: "8 - 12 عدّة", repsEn: "8 - 12 Reps", rest: "90s", tempo: "2-1-2" },
+                            { ar: "ضغط عالي بالدمبل (Incline Dumbbell Press)", en: "Incline Dumbbell Press", muscleAr: "الصدر العلوي", muscleEn: "Upper Chest", baseSets: 4, repsAr: "10 - 12 عدّة", repsEn: "10 - 12 Reps", rest: "90s", tempo: "3-1-1" },
+                            { ar: "تجديف بالبار أو تي بار (Barbell / T-Bar Row)", en: "Barbell / T-Bar Row", muscleAr: "سمك الظهر", muscleEn: "Back Thickness", baseSets: 4, repsAr: "8 - 10 عدات", repsEn: "8 - 10 Reps", rest: "90s", tempo: "2-1-1" },
+                            { ar: "سوبر ست: تفتيح صدر + بول أوفر بالدمبل (Dumbbell Pullover)", en: "Superset: Cable Flyes + DB Pullover", muscleAr: "توسيع القفص الصدري والمجنص", muscleEn: "Chest & Lats", baseSets: 3, repsAr: "12 - 15 عدّة", repsEn: "12 - 15 Reps", rest: "75s", tempo: "2-2-1" }
+                        ]
+                    },
+                    {
+                        arDay: "اليوم 2: أكتاف وذراع أ (Shoulders & Arms A)", enDay: "Day 2: Shoulders & Arms A", isRest: false,
+                        exercises: [
+                            { ar: "ضغط أرنولد بالدمبل (Arnold Dumbbell Press)", en: "Seated Arnold Press", muscleAr: "الأكتاف 3D", muscleEn: "Full Deltoids", baseSets: 4, repsAr: "8 - 12 عدّة", repsEn: "8 - 12 Reps", rest: "90s", tempo: "2-1-1" },
+                            { ar: "رفرفة جانبي بالدمبل (Lateral Raises)", en: "Dumbbell Lateral Raises", muscleAr: "الكتف الجانبي", muscleEn: "Side Delts", baseSets: 4, repsAr: "12 - 15 عدّة", repsEn: "12 - 15 Reps", rest: "60s", tempo: "2-1-2" },
+                            { ar: "سوبر ست: بار بايسبس + كسارة جماجم للتراي", en: "Superset: Barbell Curl + EZ Skullcrushers", muscleAr: "الباي والتراي معاً", muscleEn: "Biceps & Triceps", baseSets: 4, repsAr: "10 - 12 عدّة", repsEn: "10 - 12 Reps", rest: "75s", tempo: "2-1-2" },
+                            { ar: "سوبر ست: تبادل دمبل مائل + دفع حبل ترايسبس", en: "Superset: Incline DB Curl + Rope Pushdown", muscleAr: "ضخ دم الذراع", muscleEn: "Arm Pump", baseSets: 3, repsAr: "12 - 15 عدّة", repsEn: "12 - 15 Reps", rest: "60s", tempo: "2-1-2" },
+                            { ar: "رفرفة خلفي على الفراشة (Rear Delt Fly)", en: "Rear Delt Machine Fly", muscleAr: "الكتف الخلفي", muscleEn: "Rear Delts", baseSets: 4, repsAr: "15 عدّة", repsEn: "15 Reps", rest: "60s", tempo: "2-2-1" }
+                        ]
+                    },
+                    {
+                        arDay: "اليوم 3: أرجل وبطن أ (Legs & Abs A)", enDay: "Day 3: Legs & Abs A", isRest: false,
+                        exercises: [
+                            { ar: "سكوات بالبار (Barbell Squat)", en: "Barbell Back Squat", muscleAr: "الأرجل الكاملة", muscleEn: "Quads & Glutes", baseSets: 4, repsAr: "8 - 10 عدات", repsEn: "8 - 10 Reps", rest: "120s", tempo: "3-1-1" },
+                            { ar: "ديدليفت روماني (Romanian Deadlift)", en: "Romanian Deadlift", muscleAr: "الخلفيات", muscleEn: "Hamstrings", baseSets: 4, repsAr: "8 - 10 عدات", repsEn: "8 - 10 Reps", rest: "90s", tempo: "3-1-1" },
+                            { ar: "مكبس الأرجل (Leg Press)", en: "Leg Press", muscleAr: "الفخذ الأمامي", muscleEn: "Quads", baseSets: 3, repsAr: "12 عدّة", repsEn: "12 Reps", rest: "90s", tempo: "3-0-1" },
+                            { ar: "خلفيات جالس + سمانة واقف", en: "Seated Leg Curl + Standing Calf Raise", muscleAr: "الخلفيات والسمانة", muscleEn: "Hamstrings & Calves", baseSets: 4, repsAr: "12 - 15 عدّة", repsEn: "12 - 15 Reps", rest: "60s", tempo: "2-1-2" }
+                        ]
+                    },
+                    {
+                        arDay: "اليوم 4: صدر وظهر ب (Chest & Back B)", enDay: "Day 4: Chest & Back B (Volume & Pump)", isRest: false,
+                        exercises: [
+                            { ar: "بنش عالي بالبار أو السميث (Incline Press)", en: "Incline Barbell / Smith Press", muscleAr: "الصدر العلوي", muscleEn: "Upper Chest", baseSets: 4, repsAr: "8 - 10 عدات", repsEn: "8 - 10 Reps", rest: "90s", tempo: "3-1-1" },
+                            { ar: "سحب أرضي بالكابل (Seated Cable Row)", en: "Seated Cable Row", muscleAr: "وسط الظهر", muscleEn: "Mid Back", baseSets: 4, repsAr: "10 - 12 عدّة", repsEn: "10 - 12 Reps", rest: "75s", tempo: "2-1-2" },
+                            { ar: "غطس متوازي للصدر (Weighted Chest Dips)", en: "Chest Dips / Decline Press", muscleAr: "الصدر السفلي", muscleEn: "Lower Chest", baseSets: 3, repsAr: "10 - 12 عدّة", repsEn: "10 - 12 Reps", rest: "75s", tempo: "2-1-1" },
+                            { ar: "سحب عالي ضيق (Close-Grip Pulldown)", en: "Close-Grip Lat Pulldown", muscleAr: "المجنص", muscleEn: "Lats", baseSets: 4, repsAr: "10 - 12 عدّة", repsEn: "10 - 12 Reps", rest: "75s", tempo: "2-1-2" }
+                        ]
+                    },
+                    {
+                        arDay: "اليوم 5: أكتاف وذراع ب (Shoulders & Arms B)", enDay: "Day 5: Shoulders & Arms B", isRest: false,
+                        exercises: [
+                            { ar: "ضغط أكتاف عسكري واقف أو جالس (Military Press)", en: "Overhead Barbell / Machine Press", muscleAr: "الأكتاف", muscleEn: "Shoulders", baseSets: 4, repsAr: "8 - 10 عدات", repsEn: "8 - 10 Reps", rest: "90s", tempo: "2-1-1" },
+                            { ar: "رفرفة جانبي بالكابل (Cable Lateral Raise)", en: "Behind-the-Back Cable Lateral Raise", muscleAr: "الكتف الجانبي", muscleEn: "Side Delts", baseSets: 4, repsAr: "15 عدّة", repsEn: "15 Reps", rest: "60s", tempo: "2-1-2" },
+                            { ar: "سوبر ست: كرسي الواعظ + ترايسبس خلف الرأس", en: "Superset: Preacher Curl + Overhead Tricep Ext", muscleAr: "الذراع الكامل", muscleEn: "Arms Hypertrophy", baseSets: 4, repsAr: "12 عدّة", repsEn: "12 Reps", rest: "75s", tempo: "2-1-2" },
+                            { ar: "سوبر ست: هامر كيرل + غطس ترايسبس", en: "Superset: Hammer Curls + Bench Dips", muscleAr: "الساعد والترايسبس", muscleEn: "Forearms & Triceps", baseSets: 3, repsAr: "12 - 15 عدّة", repsEn: "12 - 15 Reps", rest: "60s", tempo: "2-1-1" }
+                        ]
+                    },
+                    {
+                        arDay: "اليوم 6: أرجل وبطن ب (Legs & Abs B)", enDay: "Day 6: Legs & Abs B", isRest: false,
+                        exercises: [
+                            { ar: "هاك سكوات أو فرونت سكوات (Hack / Front Squat)", en: "Hack Squat / Front Squat", muscleAr: "الأماميات", muscleEn: "Quads", baseSets: 4, repsAr: "10 - 12 عدّة", repsEn: "10 - 12 Reps", rest: "90s", tempo: "3-1-1" },
+                            { ar: "طعن بالدمبل (Dumbbell Walking Lunges)", en: "Dumbbell Walking Lunges", muscleAr: "الأرداف والأرجل", muscleEn: "Glutes & Legs", baseSets: 3, repsAr: "12 لكل رجل", repsEn: "12 / leg", rest: "75s", tempo: "2-1-1" },
+                            { ar: "رفرفة أمامي + خلفيات أرجل (Superset)", en: "Superset: Leg Extension + Leg Curl", muscleAr: "ضخ دم الأرجل", muscleEn: "Quad & Hamstring Pump", baseSets: 3, repsAr: "15 عدّة", repsEn: "15 Reps", rest: "60s", tempo: "2-1-2" },
+                            { ar: "طحن البطن بالكابل + سمانة", en: "Cable Crunches + Calf Raises", muscleAr: "البطن والسمانة", muscleEn: "Abs & Calves", baseSets: 4, repsAr: "15 - 20 عدّة", repsEn: "15 - 20 Reps", rest: "45s", tempo: "2-1-2" }
+                        ]
+                    },
+                    { arDay: "اليوم 7: راحة واستشفاء كامل", enDay: "Day 7: Complete Rest Day", isRest: true, exercises: [] }
+                ]
+            }
+        };
+
+        // --- INITIALIZATION ---
+        window.onload = function () {
+            renderStaticTranslations();
+            updateUIButtonsState();
+            updateAllCalculations();
+        };
+
+        // --- LANGUAGE SWITCHER ---
+        function toggleLanguage() {
+            state.lang = state.lang === 'ar' ? 'en' : 'ar';
+            const htmlEl = document.documentElement;
+            htmlEl.setAttribute('lang', state.lang);
+            htmlEl.setAttribute('dir', state.lang === 'ar' ? 'rtl' : 'ltr');
+            document.getElementById('langBtnText').textContent = state.lang === 'ar' ? 'English' : 'العربية';
+
+            renderStaticTranslations();
+            updateUIButtonsState();
+            updateAllCalculations();
+        }
+
+        function renderStaticTranslations() {
+            const dict = i18n[state.lang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key]) {
+                    el.textContent = dict[key];
+                }
+            });
+        }
+
+        // --- DARK / LIGHT THEME SWITCHER ---
+        function toggleTheme() {
+            state.darkMode = !state.darkMode;
+            const htmlEl = document.documentElement;
+            const iconEl = document.getElementById('themeIcon');
+            if (state.darkMode) {
+                htmlEl.classList.add('dark');
+                iconEl.className = 'fa-solid fa-sun text-lg';
+            } else {
+                htmlEl.classList.remove('dark');
+                iconEl.className = 'fa-solid fa-moon text-lg text-slate-700';
+            }
+        }
+
+        // --- PROFILE INPUT HANDLERS ---
+        function setGender(g) {
+            state.gender = g;
+            updateUIButtonsState();
+            updateAllCalculations();
+        }
+
+        function setFitnessLevel(lvl) {
+            state.fitnessLevel = lvl;
+            // Smartly auto-recommend an appropriate workout split when fitness level changes
+            if (lvl === 'beginner' && (state.selectedSplit === 'arnold' || state.selectedSplit === 'ppl')) {
+                state.selectedSplit = 'home';
+            } else if (lvl === 'intermediate' && state.selectedSplit === 'liss') {
+                state.selectedSplit = 'ppl';
+            } else if (lvl === 'advanced' && (state.selectedSplit === 'liss' || state.selectedSplit === 'home')) {
+                state.selectedSplit = 'arnold';
+            }
+            updateUIButtonsState();
+            updateAllCalculations();
+        }
+
+        function setGoal(g) {
+            state.goal = g;
+            updateUIButtonsState();
+            updateAllCalculations();
+        }
+
+        function resetProfile() {
+            state.gender = 'male';
+            state.age = 26;
+            state.weight = 78;
+            state.height = 176;
+            state.activity = 1.55;
+            state.fitnessLevel = 'intermediate';
+            state.goal = 'cut';
+            state.selectedDiet = 'balanced';
+            state.selectedSplit = 'ppl';
+            state.selectedDayIndex = 0;
+
+            document.getElementById('inputAge').value = 26;
+            document.getElementById('inputWeight').value = 78;
+            document.getElementById('inputHeight').value = 176;
+            document.getElementById('inputActivity').value = "1.55";
+
+            updateUIButtonsState();
+            updateAllCalculations();
+        }
+
+        function updateUIButtonsState() {
+            const activeClass = "bg-emerald-500 text-white border-emerald-500 shadow-md shadow-emerald-500/20";
+            const inactiveClass = "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-emerald-400";
+
+            // Gender
+            document.getElementById('genderMaleBtn').className = `py-3 px-4 rounded-2xl font-bold text-sm border-2 transition flex items-center justify-center gap-2 ${state.gender === 'male' ? activeClass : inactiveClass}`;
+            document.getElementById('genderFemaleBtn').className = `py-3 px-4 rounded-2xl font-bold text-sm border-2 transition flex items-center justify-center gap-2 ${state.gender === 'female' ? activeClass : inactiveClass}`;
+
+            // Fitness Level
+            ['beginner', 'intermediate', 'advanced'].forEach(lvl => {
+                const btn = document.getElementById(`lvlBtn_${lvl}`);
+                btn.className = `py-2.5 px-2 rounded-xl font-bold text-xs sm:text-sm border-2 transition flex flex-col items-center gap-1 ${state.fitnessLevel === lvl ? activeClass : inactiveClass}`;
+            });
+
+            // Goal
+            ['cut', 'maintain', 'bulk'].forEach(g => {
+                const btn = document.getElementById(`goalBtn_${g}`);
+                btn.className = `py-3 px-2 rounded-xl font-bold text-xs sm:text-sm border-2 transition flex flex-col items-center gap-1 ${state.goal === g ? activeClass : inactiveClass}`;
+            });
+        }
+
+        // --- CORE CALCULATION ENGINE ---
+        function getCalculatedMetrics() {
+            const age = Math.max(12, Math.min(100, parseFloat(document.getElementById('inputAge').value) || 26));
+            const weight = Math.max(30, Math.min(250, parseFloat(document.getElementById('inputWeight').value) || 78));
+            const height = Math.max(110, Math.min(230, parseFloat(document.getElementById('inputHeight').value) || 176));
+            const activity = parseFloat(document.getElementById('inputActivity').value) || 1.55;
+
+            state.age = age;
+            state.weight = weight;
+            state.height = height;
+            state.activity = activity;
+
+            // Mifflin-St Jeor Equation
+            let bmr = (10 * weight) + (6.25 * height) - (5 * age);
+            bmr += (state.gender === 'male') ? 5 : -161;
+            bmr = Math.round(bmr);
+
+            const tdee = Math.round(bmr * activity);
+
+            let targetCal = tdee;
+            if (state.goal === 'cut') targetCal = Math.max(1200, tdee - 500);
+            if (state.goal === 'bulk') targetCal = tdee + 400;
+
+            const diet = dietSystems[state.selectedDiet];
+            const pKcal = Math.round(targetCal * diet.ratios.p);
+            const cKcal = Math.round(targetCal * diet.ratios.c);
+            const fKcal = Math.round(targetCal * diet.ratios.f);
+
+            const pGrams = Math.round(pKcal / 4);
+            const cGrams = Math.round(cKcal / 4);
+            const fGrams = Math.round(fKcal / 9);
+
+            const waterLiters = (weight * 0.04).toFixed(1);
+            const waterCups = Math.round((weight * 0.04) * 4);
+            const fiberGrams = Math.round((targetCal / 1000) * 14);
+
+            const heightM = height / 100;
+            const bmi = (weight / (heightM * heightM)).toFixed(1);
+
+            return {
+                bmr, tdee, targetCal,
+                pKcal, cKcal, fKcal,
+                pGrams, cGrams, fGrams,
+                waterLiters, waterCups, fiberGrams, bmi
+            };
+        }
+
+        function updateAllCalculations() {
+            const m = getCalculatedMetrics();
+            const dict = i18n[state.lang];
+            const diet = dietSystems[state.selectedDiet];
+
+            // Update BMR, TDEE, Target
+            document.getElementById('valBMR').textContent = m.bmr.toLocaleString();
+            document.getElementById('valTDEE').textContent = m.tdee.toLocaleString();
+            document.getElementById('valTargetCal').textContent = m.targetCal.toLocaleString();
+
+            // Goal note
+            const goalNoteMap = {
+                cut: dict.GoalNoteCut,
+                maintain: dict.GoalNoteMaintain,
+                bulk: dict.GoalNoteBulk
+            };
+            document.getElementById('valGoalNote').textContent = goalNoteMap[state.goal];
+
+            // Active Diet Badge
+            document.getElementById('activeDietBadge').textContent = diet[state.lang].name;
+
+            // Update Macro Bars & Numbers
+            const pPct = Math.round(diet.ratios.p * 100);
+            const cPct = Math.round(diet.ratios.c * 100);
+            const fPct = Math.round(diet.ratios.f * 100);
+
+            document.getElementById('barProtein').style.width = `${pPct}%`;
+            document.getElementById('barCarbs').style.width = `${cPct}%`;
+            document.getElementById('barFats').style.width = `${fPct}%`;
+
+            document.getElementById('pctProtein').textContent = `${pPct}%`;
+            document.getElementById('pctCarbs').textContent = `${cPct}%`;
+            document.getElementById('pctFats').textContent = `${fPct}%`;
+
+            document.getElementById('gramProtein').textContent = m.pGrams;
+            document.getElementById('gramCarbs').textContent = m.cGrams;
+            document.getElementById('gramFats').textContent = m.fGrams;
+
+            if (state.lang === 'ar') {
+                document.getElementById('kcalProtein').textContent = `${m.pKcal} سعرة حرارية (4 سعرة/جم)`;
+                document.getElementById('kcalCarbs').textContent = `${m.cKcal} سعرة حرارية (4 سعرة/جم)`;
+                document.getElementById('kcalFats').textContent = `${m.fKcal} سعرة حرارية (9 سعرة/جم)`;
+                document.getElementById('valWater').textContent = `${m.waterLiters} لتر (${m.waterCups} كوب)`;
+                document.getElementById('valFiber').textContent = `${m.fiberGrams} جرام / يوم`;
+            } else {
+                document.getElementById('kcalProtein').textContent = `${m.pKcal} kcal (4 kcal/g)`;
+                document.getElementById('kcalCarbs').textContent = `${m.cKcal} kcal (4 kcal/g)`;
+                document.getElementById('kcalFats').textContent = `${m.fKcal} kcal (9 kcal/g)`;
+                document.getElementById('valWater').textContent = `${m.waterLiters} Liters (${m.waterCups} cups)`;
+                document.getElementById('valFiber').textContent = `${m.fiberGrams} g / day`;
+            }
+
+            // BMI Status
+            let bmiStatus = dict.bmiNormal;
+            if (m.bmi < 18.5) bmiStatus = dict.bmiUnder;
+            else if (m.bmi >= 25 && m.bmi < 30) bmiStatus = dict.bmiOver;
+            else if (m.bmi >= 30) bmiStatus = dict.bmiObese;
+            document.getElementById('valBMI').textContent = `${m.bmi} (${bmiStatus})`;
+
+            // Hero Summary Cards
+            document.getElementById('heroTargetCal').textContent = m.targetCal.toLocaleString();
+            document.getElementById('heroTargetProt').textContent = `${m.pGrams}g`;
+            document.getElementById('heroDietName').textContent = diet[state.lang].short;
+            document.getElementById('heroSplitName').textContent = workoutPrograms[state.selectedSplit][state.lang].name.split('(')[0].trim();
+
+            // Render Diet Section & Workout Section
+            renderDietSection(m);
+            renderWorkoutSection();
+        }
+
+        // --- DIET & MEAL PLAN RENDERER ---
+        function selectDiet(dietId) {
+            state.selectedDiet = dietId;
+            updateAllCalculations();
+        }
+
+        function swapMealOption(slotKey) {
+            const totalOpts = mealsDatabase[slotKey].options.length;
+            state.mealIndices[slotKey] = (state.mealIndices[slotKey] + 1) % totalOpts;
+            updateAllCalculations();
+        }
+
+        function randomizeAllMeals() {
+            ['breakfast', 'lunch', 'dinner', 'snack'].forEach(slot => {
+                const totalOpts = mealsDatabase[slot].options.length;
+                state.mealIndices[slot] = (state.mealIndices[slot] + 1) % totalOpts;
+            });
+            updateAllCalculations();
+        }
+
+        function toggleMealEaten(slotKey) {
+            state.eatenMeals[slotKey] = !state.eatenMeals[slotKey];
+            updateAllCalculations();
+        }
+
+        function renderDietSection(metrics) {
+            const lang = state.lang;
+            const dict = i18n[lang];
+
+            // 1. Render Diet Selector Tabs
+            const tabsHtml = Object.values(dietSystems).map(d => {
+                const isSelected = state.selectedDiet === d.id;
+                const pPct = Math.round(d.ratios.p * 100);
+                const cPct = Math.round(d.ratios.c * 100);
+                const fPct = Math.round(d.ratios.f * 100);
+                return `
+                    <button onclick="selectDiet('${d.id}')" class="p-3.5 rounded-2xl border-2 text-start transition flex flex-col justify-between gap-2 ${isSelected ? 'tab-active border-emerald-500' : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-emerald-400'}">
+                        <div class="flex items-center justify-between w-full">
+                            <i class="fa-solid ${d.icon} text-lg ${isSelected ? 'text-white' : 'text-emerald-500'}"></i>
+                            <span class="text-[11px] font-bold px-2 py-0.5 rounded-full ${isSelected ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500'}">
+                                ${pPct}P / ${cPct}C / ${fPct}F
+                            </span>
+                        </div>
+                        <div class="font-extrabold text-xs sm:text-sm mt-1">${d[lang].name}</div>
+                    </button>
+                `;
+            }).join('');
+            document.getElementById('dietTabsContainer').innerHTML = tabsHtml;
+
+            // 2. Render Selected Diet Info Banner
+            const curDiet = dietSystems[state.selectedDiet];
+            document.getElementById('dietInfoBanner').innerHTML = `
+                <div class="space-y-1">
+                    <div class="flex items-center gap-2 font-extrabold text-base text-amber-600 dark:text-amber-400">
+                        <i class="fa-solid ${curDiet.icon}"></i>
+                        <span>${curDiet[lang].name}</span>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300">${curDiet[lang].desc}</p>
+                </div>
+                <div class="shrink-0 text-xs font-bold px-3.5 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
+                    <i class="fa-regular fa-clock"></i>
+                    <span>${curDiet[lang].window}</span>
+                </div>
+            `;
+
+            // 3. Render 4 Meal Cards scaled to target calories
+            const scaleFactor = metrics.targetCal / 2000;
+            const slots = ['breakfast', 'lunch', 'dinner', 'snack'];
+            const mealsHtml = slots.map(slotKey => {
+                const slot = mealsDatabase[slotKey];
+                const optIdx = state.mealIndices[slotKey];
+                const option = slot.options[optIdx];
+                const isEaten = state.eatenMeals[slotKey];
+
+                const mealKcal = Math.round(metrics.targetCal * slot.share);
+                const mealP = Math.round(metrics.pGrams * slot.share);
+                const mealC = Math.round(metrics.cGrams * slot.share);
+                const mealF = Math.round(metrics.fGrams * slot.share);
+
+                const itemsListHtml = option.items.map(item => {
+                    const scaledG = Math.max(5, Math.round((item.baseG * scaleFactor) / 5) * 5);
+                    return `
+                        <li class="flex items-center justify-between py-2 border-b border-slate-100 dark:border-slate-800/80 last:border-none text-xs sm:text-sm">
+                            <span class="font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-2">
+                                <i class="fa-solid fa-check text-emerald-500 text-xs"></i>
+                                ${lang === 'ar' ? item.ar : item.en}
+                            </span>
+                            <span class="font-extrabold px-2.5 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-emerald-600 dark:text-emerald-400">
+                                ${scaledG} ${lang === 'ar' ? item.unitAr : item.unitEn}
+                            </span>
+                        </li>
+                    `;
+                }).join('');
+
+                return `
+                    <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 shadow-lg border transition-all ${isEaten ? 'border-emerald-500/60 bg-emerald-500/5' : 'border-slate-200/80 dark:border-slate-800'} flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <!-- Card Header -->
+                            <div class="flex items-center justify-between gap-2">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-lg">
+                                        <i class="fa-solid ${slot.icon}"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-extrabold text-sm sm:text-base">${lang === 'ar' ? slot.arTitle : slot.enTitle}</h4>
+                                        <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">${mealKcal} ${dict.unitKcal.split('/')[0]}</span>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-1.5">
+                                    <button onclick="swapMealOption('${slotKey}')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-emerald-500 hover:text-white dark:bg-slate-800 dark:hover:bg-emerald-500 transition flex items-center gap-1.5">
+                                        <i class="fa-solid fa-arrows-rotate"></i>
+                                        <span>${dict.swapMealBtn} (${optIdx + 1}/${slot.options.length})</span>
+                                    </button>
+                                    <button onclick="toggleMealEaten('${slotKey}')" class="w-8 h-8 rounded-xl flex items-center justify-center border transition ${isEaten ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-slate-300 dark:border-slate-700 text-slate-400 hover:border-emerald-500'}" title="${dict.markEaten}">
+                                        <i class="fa-solid fa-check text-xs"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Option Title -->
+                            <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-100 border border-slate-200/60 dark:border-slate-700/60">
+                                ${lang === 'ar' ? option.arName : option.enName}
+                            </div>
+
+                            <!-- Scaled Food Items -->
+                            <ul class="divide-y divide-slate-100 dark:divide-slate-800">
+                                ${itemsListHtml}
+                            </ul>
+                        </div>
+
+                        <!-- Meal Macros Footer -->
+                        <div class="grid grid-cols-3 gap-2 pt-3 border-t border-slate-200 dark:border-slate-800 text-center">
+                            <div class="p-2 rounded-xl bg-rose-500/5 border border-rose-500/15">
+                                <div class="text-[10px] font-bold text-rose-500">${dict.macroProtein.split(' ')[0]}</div>
+                                <div class="text-xs sm:text-sm font-black">${mealP}${dict.unitGram}</div>
+                            </div>
+                            <div class="p-2 rounded-xl bg-amber-500/5 border border-amber-500/15">
+                                <div class="text-[10px] font-bold text-amber-500">${dict.macroCarbs.split(' ')[0]}</div>
+                                <div class="text-xs sm:text-sm font-black">${mealC}${dict.unitGram}</div>
+                            </div>
+                            <div class="p-2 rounded-xl bg-sky-500/5 border border-sky-500/15">
+                                <div class="text-[10px] font-bold text-sky-500">${dict.macroFats.split(' ')[0]}</div>
+                                <div class="text-xs sm:text-sm font-black">${mealF}${dict.unitGram}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('mealsGridContainer').innerHTML = mealsHtml;
+        }
+
+        // --- WORKOUT SPLIT & WEEKLY SCHEDULE RENDERER ---
+        function selectWorkoutSplit(splitId) {
+            state.selectedSplit = splitId;
+            state.selectedDayIndex = 0;
+            updateAllCalculations();
+        }
+
+        function selectWorkoutDay(dayIdx) {
+            state.selectedDayIndex = dayIdx;
+            renderWorkoutSection();
+        }
+
+        function toggleExerciseCompleted(exKey) {
+            state.completedExercises[exKey] = !state.completedExercises[exKey];
+            renderWorkoutSection();
+        }
+
+        function renderWorkoutSection() {
+            const lang = state.lang;
+            const dict = i18n[lang];
+            const lvl = state.fitnessLevel;
+
+            // Level Label
+            const lvlNameMap = {
+                beginner: dict.lvlBeginner,
+                intermediate: dict.lvlIntermediate,
+                advanced: dict.lvlAdvanced
+            };
+
+            // 1. Smart Recommendation Banner based on user's Fitness Level
+            let recTextAr = "";
+            let recTextEn = "";
+            if (lvl === 'beginner') {
+                recTextAr = "بناءً على مستواك (مبتدئ): نوصي بـ «تمارين المقاومة في المنزل» أو «برو سبليت» بـ 3 مجموعات للتركيز على الأداء الصحيح، مع «كارديو منخفض الشدة LISS».";
+                recTextEn = "Based on your level (Beginner): We recommend 'Home Resistance Training' or 'Pro Split' with controlled volume, paired with 'Low-Intensity Cardio (LISS)'.";
+            } else if (lvl === 'intermediate') {
+                recTextAr = "بناءً على مستواك (متوسط): نوصي بنظام «بوش بول ليج (Push Pull Legs)» لتمرين العضلة مرتين أسبوعياً، أو «كارديو عالي الشدة HIIT» لرفع اللياقة وحرق الدهون.";
+                recTextEn = "Based on your level (Intermediate): We strongly recommend 'Push Pull Legs (PPL)' for optimal 2x/week muscle frequency, or 'HIIT Cardio' for conditioning.";
+            } else {
+                recTextAr = "بناءً على مستواك (متقدم): نوصي بنظام «أرنولد سبليت (Arnold Split)» أو «بوش بول ليج (PPL)» بحجم تدريبي مرتفع (4-5 مجموعات) مع جلسات «HIIT».";
+                recTextEn = "Based on your level (Advanced): We recommend 'Arnold Split' or high-volume 'Push Pull Legs (PPL)' (4-5 working sets) for maximum hypertrophy.";
+            }
+
+            document.getElementById('smartWorkoutRecBanner').innerHTML = `
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <p class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100">
+                        ${lang === 'ar' ? recTextAr : recTextEn}
+                    </p>
+                </div>
+                <span class="text-xs font-extrabold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 shrink-0">
+                    ${dict.levelTipPrefix}: ${lvlNameMap[lvl]}
+                </span>
+            `;
+
+            // 2. Render 6 Workout Program Cards
+            const splitsHtml = Object.values(workoutPrograms).map(prog => {
+                const isSelected = state.selectedSplit === prog.id;
+                const isRec = prog.recommendedFor.includes(lvl);
+                return `
+                    <button onclick="selectWorkoutSplit('${prog.id}')" class="p-5 rounded-3xl border-2 text-start transition relative flex flex-col justify-between gap-3 ${isSelected ? 'tab-active border-emerald-500' : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-emerald-400'}">
+                        <div class="flex items-center justify-between w-full gap-2">
+                            <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-lg ${isSelected ? 'bg-white/20 text-white' : 'bg-emerald-500/10 text-emerald-500'}">
+                                <i class="fa-solid ${prog.icon}"></i>
+                            </div>
+                            ${isRec ? `<span class="text-[11px] font-extrabold px-2.5 py-1 rounded-full ${isSelected ? 'bg-white text-emerald-700' : 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30'}"><i class="fa-solid fa-star me-1"></i>${dict.recBadge}</span>` : ''}
+                        </div>
+                        <div>
+                            <h4 class="font-black text-base sm:text-lg">${prog[lang].name}</h4>
+                            <p class="text-xs mt-1 ${isSelected ? 'text-emerald-50' : 'text-slate-500 dark:text-slate-400'} line-clamp-2">${prog[lang].desc}</p>
+                        </div>
+                        <div class="pt-2 border-t ${isSelected ? 'border-white/20 text-white' : 'border-slate-100 dark:border-slate-800 text-emerald-600 dark:text-emerald-400'} flex items-center justify-between text-xs font-bold">
+                            <span><i class="fa-regular fa-calendar-check me-1"></i>${prog[lang].freq}</span>
+                            <i class="fa-solid ${lang === 'ar' ? 'fa-arrow-left' : 'fa-arrow-right'}"></i>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+            document.getElementById('workoutSplitsContainer').innerHTML = splitsHtml;
+
+            // 3. Selected Split Header
+            const curSplit = workoutPrograms[state.selectedSplit];
+            let levelModifierNoteAr = lvl === 'beginner' ? "مضبوط لمستوى مبتدئ (3 مجموعات لكل تمرين، تركيز على التكنيك)" : (lvl === 'intermediate' ? "مضبوط لمستوى متوسط (4 مجموعات لكل تمرين، تدرج في الأوزان)" : "مضبوط لمستوى متقدم (4-5 مجموعات، شدة عالية حتى الفشل العضلي الآمن)");
+            let levelModifierNoteEn = lvl === 'beginner' ? "Adapted for Beginner (3 working sets/exercise, form mastery)" : (lvl === 'intermediate' ? "Adapted for Intermediate (4 working sets/exercise, progressive overload)" : "Adapted for Advanced (4-5 high-intensity sets near muscular failure)");
+
+            document.getElementById('selectedSplitHeader').innerHTML = `
+                <div class="space-y-1.5">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                            ${curSplit[lang].badge}
+                        </span>
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400">
+                            ${lang === 'ar' ? levelModifierNoteAr : levelModifierNoteEn}
+                        </span>
+                    </div>
+                    <h4 class="text-xl sm:text-2xl font-black">${curSplit[lang].name}</h4>
+                    <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">${curSplit[lang].desc}</p>
+                </div>
+            `;
+
+            // 4. Render 7-Day Selector Bar
+            const daysHtml = curSplit.days.map((d, idx) => {
+                const isDayActive = state.selectedDayIndex === idx;
+                const dayTitle = lang === 'ar' ? d.arDay : d.enDay;
+                const [shortDay, focusPart] = dayTitle.split(':');
+                return `
+                    <button onclick="selectWorkoutDay(${idx})" class="p-3 rounded-2xl border-2 text-start transition flex flex-col justify-between gap-1 ${isDayActive ? 'tab-active border-emerald-500' : 'bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700/70 hover:border-emerald-400'}">
+                        <div class="flex items-center justify-between w-full">
+                            <span class="text-xs font-extrabold ${isDayActive ? 'text-emerald-100' : 'text-emerald-600 dark:text-emerald-400'}">${shortDay}</span>
+                            <i class="fa-solid ${d.isRest ? 'fa-mug-hot' : 'fa-fire'} text-xs ${isDayActive ? 'text-white' : (d.isRest ? 'text-sky-400' : 'text-rose-500')}"></i>
+                        </div>
+                        <div class="font-bold text-xs truncate">${focusPart ? focusPart.trim() : dayTitle}</div>
+                    </button>
+                `;
+            }).join('');
+            document.getElementById('weekDaysContainer').innerHTML = daysHtml;
+
+            // 5. Render Exercises for Selected Day
+            const activeDay = curSplit.days[state.selectedDayIndex];
+            if (activeDay.isRest) {
+                document.getElementById('dayExercisesContainer').innerHTML = `
+                    <div class="p-8 rounded-3xl bg-sky-500/5 border border-sky-500/20 text-center space-y-3">
+                        <div class="w-16 h-16 rounded-2xl bg-sky-500/10 text-sky-500 flex items-center justify-center text-3xl mx-auto">
+                            <i class="fa-solid fa-spa"></i>
+                        </div>
+                        <h5 class="text-lg sm:text-xl font-extrabold">${dict.restDayTitle}</h5>
+                        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-xl mx-auto leading-relaxed">
+                            ${dict.restDayDesc}
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Adjust Sets based on Fitness Level
+            const setDelta = lvl === 'beginner' ? -1 : (lvl === 'advanced' ? 1 : 0);
+
+            const exRowsHtml = activeDay.exercises.map((ex, exIdx) => {
+                const exKey = `${state.selectedSplit}_${state.selectedDayIndex}_${exIdx}`;
+                const isDone = !!state.completedExercises[exKey];
+                const adaptedSets = Math.max(1, ex.baseSets + setDelta);
+
+                return `
+                    <div onclick="toggleExerciseCompleted('${exKey}')" class="cursor-pointer p-4 sm:p-5 rounded-2xl border transition-all flex flex-col lg:flex-row lg:items-center justify-between gap-4 ${isDone ? 'bg-emerald-500/10 border-emerald-500/50' : 'bg-slate-50/80 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700/80 hover:border-emerald-400'}">
+                        <div class="flex items-start sm:items-center gap-3.5">
+                            <div class="w-9 h-9 rounded-xl flex items-center justify-center font-black text-sm shrink-0 transition ${isDone ? 'bg-emerald-500 text-white' : 'bg-white dark:bg-slate-700 text-emerald-500 border border-slate-200 dark:border-slate-600'}">
+                                ${isDone ? '<i class="fa-solid fa-check"></i>' : (exIdx + 1)}
+                            </div>
+                            <div>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <h5 class="font-extrabold text-sm sm:text-base ${isDone ? 'line-through opacity-70' : ''}">${lang === 'ar' ? ex.ar : ex.en}</h5>
+                                    <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                                        ${lang === 'ar' ? ex.muscleAr : ex.muscleEn}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 shrink-0">
+                            <div class="px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-700 text-center">
+                                <div class="text-[10px] text-slate-400 font-bold">${dict.setsLabel}</div>
+                                <div class="text-xs sm:text-sm font-black text-emerald-600 dark:text-emerald-400">${adaptedSets}</div>
+                            </div>
+                            <div class="px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-700 text-center">
+                                <div class="text-[10px] text-slate-400 font-bold">${dict.repsLabel}</div>
+                                <div class="text-xs sm:text-sm font-black">${lang === 'ar' ? ex.repsAr : ex.repsEn}</div>
+                            </div>
+                            <div class="px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-700 text-center">
+                                <div class="text-[10px] text-slate-400 font-bold">${dict.restLabel}</div>
+                                <div class="text-xs sm:text-sm font-black text-rose-500">${ex.rest}</div>
+                            </div>
+                            <div class="px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-700 text-center">
+                                <div class="text-[10px] text-slate-400 font-bold">${dict.tempoLabel}</div>
+                                <div class="text-xs font-bold text-amber-500 truncate">${ex.tempo}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('dayExercisesContainer').innerHTML = `
+                <div class="flex items-center justify-between">
+                    <h5 class="font-extrabold text-base sm:text-lg text-emerald-600 dark:text-emerald-400">
+                        ${lang === 'ar' ? activeDay.arDay : activeDay.enDay}
+                    </h5>
+                    <span class="text-xs text-slate-400 font-semibold">
+                        ${lang === 'ar' ? 'اضغط على أي تمرين لتحديده كمكتمل' : 'Click any exercise to mark as completed'}
+                    </span>
+                </div>
+                <div class="space-y-3">
+                    ${exRowsHtml}
+                </div>
+            `;
+        }
+
+        // --- INTERACTIVE REST TIMER ---
+        function startRestTimer(seconds) {
+            stopRestTimer();
+            state.timerSeconds = seconds;
+            updateTimerDisplay();
+            state.timerInterval = setInterval(() => {
+                state.timerSeconds--;
+                updateTimerDisplay();
+                if (state.timerSeconds <= 0) {
+                    stopRestTimer();
+                    playBeep();
+                }
+            }, 1000);
+        }
+
+        function stopRestTimer() {
+            if (state.timerInterval) {
+                clearInterval(state.timerInterval);
+                state.timerInterval = null;
+            }
+        }
+
+        function updateTimerDisplay() {
+            const mins = String(Math.floor(state.timerSeconds / 60)).padStart(2, '0');
+            const secs = String(state.timerSeconds % 60).padStart(2, '0');
+            document.getElementById('restTimerDisplay').textContent = `${mins}:${secs}`;
+        }
+
+        function playBeep() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, ctx.currentTime);
+                gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.35);
+            } catch (e) {}
+        }
+    </script>
+</body>
+</html>
